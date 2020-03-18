@@ -1,0 +1,15 @@
+
+modLoader="javafml"
+loaderVersion="[28,)"
+issueTrackerURL="https://github.com/hybolic/Meadery/issues"
+[[mods]]
+modId="meadery"
+version="${file.jarVersion}"
+displayName="Meadery Mod"
+updateJSONURL="https://raw.githubusercontent.com/hybolic/Meadery/master/BUILDS/verions.json"
+displayURL="https://github.com/hybolic/Meadery/"
+logoFile="meadery.png"
+credits=""
+authors="nadir"
+description='''
+'''
