@@ -40,8 +40,7 @@ public class HiveBlock extends Block {
 	public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 	public static final BooleanProperty HIBERNATING = BooleanProperty.create("hibernating");
 	public static final IntegerProperty HONEY_AMOUNT = IntegerProperty.create("amount", 0, 15);
-	// public static final IntegerProperty AGE = IntegerProperty.create("age", 0,
-	// 30);
+	// public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 30);
 
 	public HiveBlock() {
 		super(Block.Properties.create(Material.WOOD, MaterialColor.GOLD).tickRandomly().hardnessAndResistance(0.4F));
@@ -141,8 +140,8 @@ public class HiveBlock extends Block {
 		ItemStack item = context.getItem();
 		BlockState state = this.getDefaultState();
 		if (item.hasTag()) {
-			state.with(HONEY_AMOUNT, item.getTag().getInt("amount"));
-			state.with(HIBERNATING, item.getTag().getBoolean("hibernating"));
+			state = state.with(HONEY_AMOUNT, item.getTag().getInt("amount"));
+			state = state.with(HIBERNATING, item.getTag().getBoolean("hibernating"));
 
 		}
 		return state.with(FACING, context.getPlacementHorizontalFacing());

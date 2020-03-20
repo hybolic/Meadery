@@ -1,0 +1,13 @@
+{
+	"type":"meadery:brew",
+	"ingredients":
+	[
+		{
+			"tag" : "minecraft:honey",
+		},
+		{
+			"tag" : "minecraft:water"
+		}
+	],
+	"each":250
+}
