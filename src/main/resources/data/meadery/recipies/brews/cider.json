@@ -1,0 +1,12 @@
+{
+	"type":"meadery:brew",
+	"name":"cider",
+	"ingredients":
+	[
+		{
+			"fermentation_type" : "fruit",
+			"count" : 1
+		}
+	],
+	"needs_water":false
+}

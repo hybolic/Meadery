@@ -16,6 +16,9 @@ public class ModBlocks {
 	@ObjectHolder("meadery:culture_station")
 	public static final Block CultureStation = null;
 	
-	@ObjectHolder("meadery:hive")
+	@ObjectHolder("meadery:verticle_hive")
 	public static HiveBlock hiveBlock;
+	
+	@ObjectHolder("meadery:wild_hive")
+	public static Block wildHiveBlock;
 }

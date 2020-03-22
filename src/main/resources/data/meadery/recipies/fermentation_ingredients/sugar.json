@@ -1,0 +1,9 @@
+{
+	"type":"meadery:fermentation_ingredient",
+	"fermentation_type":"sugar",
+	"ingredient":
+	{
+		"item": "meadery:honey"
+	},
+	"sugar":70
+}

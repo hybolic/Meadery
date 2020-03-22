@@ -15,5 +15,10 @@ public class FermentedProduct extends Item {
 		isLiquid = true;
 		return this;
 	}
+	
+	public boolean isLiquid()
+	{
+		return isLiquid;
+	}
 
 }

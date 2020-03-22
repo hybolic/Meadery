@@ -1,0 +1,7 @@
+{
+	"variants":
+	{
+		"sealed=true"  : { "model": "meadery:block/barrel"},
+		"sealed=false"  : { "model": "meadery:block/barrel_open"}
+	}
+}

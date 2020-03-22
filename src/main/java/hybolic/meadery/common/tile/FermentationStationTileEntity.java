@@ -2,6 +2,8 @@ package hybolic.meadery.common.tile;
 
 import javax.annotation.Nonnull;
 
+import hybolic.meadery.common.CulturableFoods;
+import hybolic.meadery.common.blocks.AbstractFermentationBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.IInventory;
@@ -15,16 +17,17 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.registries.ObjectHolder;
 
-public class FermentationStationTileEntity extends TileEntity implements IInventory, IFluidTank, ITickableTileEntity {
-	
-	@ObjectHolder("meadery:fermentation_station")
-    public static TileEntityType<?> TILE;
-	
-	
-	
-	private NonNullList<ItemStack> INVENTORY = NonNullList.withSize(5, ItemStack.EMPTY);
+public abstract class FermentationStationTileEntity extends TileEntity implements IInventory, IFluidTank, ITickableTileEntity {
+	/*
+	 * slot 1: additions
+	 * slot 2: ^
+	 * slot 3: ^
+	 * slot 4: ^
+	 * slot 5: culture
+	 * slot 6: output
+	 */
+	private NonNullList<ItemStack> INVENTORY = NonNullList.withSize(6, ItemStack.EMPTY);
 	private FluidStack FLUID = FluidStack.EMPTY;
 	private boolean LOCKED = false;
 	private int CAPACITY = 0;
@@ -34,22 +37,18 @@ public class FermentationStationTileEntity extends TileEntity implements IInvent
 	private int AGE = 0;
 
 	// 250mb is one bottle
-	private FermentationStationTileEntity(TileEntityType<?> tile, int capInBottles) {
+	public FermentationStationTileEntity(TileEntityType<?> tile, int capInBottles) {
 		super(tile);
 		CAPACITY = 250 * capInBottles;
 	}
 	
-	public FermentationStationTileEntity(int capInBottles) {
-		this(TILE, 4);
-	}
-	
 	public FermentationStationTileEntity() {
-		this(TILE, 4);
+		this(null, 0);
 	}
 
-	public void Unlock() {
-		if (this.LOCKED)
-			this.LOCKED = false;
+	public void toggleLock() {
+		this.LOCKED = !this.LOCKED;
+		world.setBlockState(pos, this.getBlockState().with(AbstractFermentationBlock.SEALED, this.LOCKED));
 		tryConvertInventory();
 	}
 
@@ -60,6 +59,52 @@ public class FermentationStationTileEntity extends TileEntity implements IInvent
 	}
 
 	//// IInventory////
+	public boolean canAddItem(ItemStack stack)
+	{
+		if(CulturableFoods.isCulturableFood(stack))
+		{
+			for(int i = 0; i < 4; i++)
+			{
+				if(this.getStackInSlot(i).isEmpty() || ItemStack.areItemsEqual(stack, this.getStackInSlot(i)))
+				{
+					if(this.getStackInSlot(i).getCount() + 1 < this.getStackInSlot(i).getMaxStackSize())
+					{
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	public ItemStack addItem(ItemStack stack)
+	{
+		if(canAddItem(stack))
+		{
+			for(int i = 0; i < 4; i++)
+			{
+				if(this.getStackInSlot(i).isEmpty() || ItemStack.areItemsEqual(stack, this.getStackInSlot(i)))
+				{
+					if(this.getStackInSlot(i).isEmpty() && this.getStackInSlot(i).getCount() + 1 < this.getStackInSlot(i).getMaxStackSize())
+					{
+						if(this.getStackInSlot(i).isEmpty())
+						{
+							ItemStack newStack = stack.copy();
+							newStack.setCount(0);
+							this.setInventorySlotContents(i, newStack);
+						}
+						getStackInSlot(i).setCount(getStackInSlot(i).getCount() + 1);
+						stack.setCount(stack.getCount() - 1);
+						if(stack.getCount() > 0)
+							return stack;
+						return ItemStack.EMPTY;
+					}
+				}
+			}
+		}
+		return stack;
+	}
+	
 	@Override
 	public void clear() {
 		INVENTORY.clear();
@@ -150,6 +195,8 @@ public class FermentationStationTileEntity extends TileEntity implements IInvent
 
 	@Override
 	public int fill(FluidStack resource, FluidAction action) {
+		if (this.LOCKED)
+			return 0;
 		if (resource.isEmpty() || !isFluidValid(resource)) {
 			return 0;
 		}
@@ -183,7 +230,7 @@ public class FermentationStationTileEntity extends TileEntity implements IInvent
 	@Nonnull
 	@Override
 	public FluidStack drain(FluidStack resource, FluidAction action) {
-		if (resource.isEmpty() || !resource.isFluidEqual(FLUID)) {
+		if (resource.isEmpty() || !resource.isFluidEqual(FLUID) || this.LOCKED) {
 			return FluidStack.EMPTY;
 		}
 		return drain(resource.getAmount(), action);
@@ -192,6 +239,8 @@ public class FermentationStationTileEntity extends TileEntity implements IInvent
 	@Nonnull
 	@Override
 	public FluidStack drain(int maxDrain, FluidAction action) {
+		if (this.LOCKED)
+			return FluidStack.EMPTY;
 		int drained = maxDrain;
 		if (FLUID.getAmount() < drained) {
 			drained = FLUID.getAmount();
@@ -208,6 +257,10 @@ public class FermentationStationTileEntity extends TileEntity implements IInvent
 	public void tick() {
 		if (LOCKED)
 			this.AGE++;
+		if(FLUID.getAmount() == this.getCapacity())
+		{
+			//check inventory
+		}
 	}
 
 	// IForgeTileEntity

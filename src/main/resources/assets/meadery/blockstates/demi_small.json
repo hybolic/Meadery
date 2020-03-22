@@ -1,0 +1,13 @@
+{
+	"variants":
+	{
+		"facing=north,sealed=true"  : { "model": "meadery:block/demi_small", "y" : 90},
+		"facing=south,sealed=true"  : { "model": "meadery:block/demi_small", "y" : 270},
+		"facing=west,sealed=true"  : { "model": "meadery:block/demi_small", "y" : 0},
+		"facing=east,sealed=true"  : { "model": "meadery:block/demi_small", "y" : 180},
+		"facing=north,sealed=false"  : { "model": "meadery:block/demi_small_open", "y" : 90},
+		"facing=south,sealed=false"  : { "model": "meadery:block/demi_small_open", "y" : 270},
+		"facing=west,sealed=false"  : { "model": "meadery:block/demi_small_open", "y" : 0},
+		"facing=east,sealed=false"  : { "model": "meadery:block/demi_small_open", "y" : 180}
+	}
+}

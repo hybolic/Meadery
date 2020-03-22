@@ -16,7 +16,7 @@ public class ModItems {
     
     @ObjectHolder("meadery:mead")
 	public static FermentedProduct Mead;
-    public static Food food_mead = (new Food.Builder()).hunger(5).saturation(.3f).build();
+    public static Food food_Mead = (new Food.Builder()).hunger(5).saturation(.3f).build();
     @ObjectHolder("meadery:wine")
 	public static FermentedProduct Wine;
     public static Food food_Wine = (new Food.Builder()).hunger(5).saturation(.3f).build();

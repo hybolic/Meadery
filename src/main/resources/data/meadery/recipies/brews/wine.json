@@ -1,12 +1,12 @@
 {
 	"type":"meadery:brew",
-	"name":"mead",
+	"name":"wine",
 	"ingredients":
 	[
 		{
-			"fermentation_type" : "honey",
+			"fermentation_type" : "berry",
 			"count" : 4
 		}
 	],
-	"needs_water":true
+	"needs_water":false
 }

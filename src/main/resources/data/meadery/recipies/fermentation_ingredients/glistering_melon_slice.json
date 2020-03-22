@@ -1,0 +1,9 @@
+{
+	"type":"meadery:fermentation_ingredient",
+	"fermentation_type":"fruit",
+	"ingredient":
+	{
+		"item": "minecraft:glistering_melon_slice"
+	},
+	"sugar":10
+}

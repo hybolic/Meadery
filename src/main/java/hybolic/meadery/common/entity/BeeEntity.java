@@ -30,6 +30,7 @@ import net.minecraft.world.World;
 public class BeeEntity extends AnimalEntity implements IFlyingAnimal {
 
 	public static final ResourceLocation pollinateSFX = new ResourceLocation("meadery", "entity.bee.pollinate");
+	public static final ResourceLocation buzzingSFX = new ResourceLocation("meadery", "entity.bee.buzz");
 
 	private class FindFlowersGoal extends MoveToBlockGoal {
 
@@ -46,10 +47,7 @@ public class BeeEntity extends AnimalEntity implements IFlyingAnimal {
 		public boolean shouldMove() {
 			return this.timeoutCounter % 100 == 0;
 		}
-
-		/**
-		 * Return true to set given position as destination
-		 */
+		
 		protected boolean shouldMoveTo(IWorldReader worldIn, BlockPos pos) {
 			BlockState blockstate = worldIn.getBlockState(pos);
 			return isPollinatable(blockstate);

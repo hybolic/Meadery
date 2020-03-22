@@ -1,0 +1,91 @@
+{
+    "textures": {
+        "particle": "minecraft:block/light_gray_stained_glass",
+        "light_gray_stained_glass": "minecraft:block/light_gray_stained_glass",
+        "acacia_planks": "minecraft:block/acacia_planks"
+    },
+    "display": {
+        "gui": {
+            "rotation": [ 30, 45, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.625, 0.625, 0.625 ]
+        },
+        "ground": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 3, 0 ],
+            "scale": [ 0.25, 0.25, 0.25 ]
+        },
+        "fixed": {
+            "rotation": [ 0, 180, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 1, 1, 1 ]
+        },
+        "head": {
+            "rotation": [ 0, 180, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 1, 1, 1 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 0, 315, 0 ],
+            "translation": [ 0, 2.5, 0 ],
+            "scale": [ 0.4, 0.4, 0.4 ]
+        },
+        "thirdperson_righthand": {
+            "rotation": [ 75, 315, 0 ],
+            "translation": [ 0, 2.5, 0 ],
+            "scale": [ 0.375, 0.375, 0.375 ]
+        }
+    },
+    "elements": [
+        {
+            "name": "Bottle_Center",
+            "from": [ 0, 0, 1 ], 
+            "to": [ 14, 12, 15 ], 
+            "faces": {
+                "north": { "texture": "#light_gray_stained_glass", "uv": [ 1, 2, 15, 14 ] },
+                "east": { "texture": "#light_gray_stained_glass", "uv": [ 0, 0, 14, 12 ] },
+                "south": { "texture": "#light_gray_stained_glass", "uv": [ 1, 2, 15, 14 ] },
+                "west": { "texture": "#light_gray_stained_glass", "uv": [ 1, 2, 15, 14 ] },
+                "up": { "texture": "#light_gray_stained_glass", "uv": [ 1, 1, 15, 15 ] },
+                "down": { "texture": "#light_gray_stained_glass", "uv": [ 1, 1, 15, 15 ] }
+            }
+        },
+        {
+            "name": "Handle",
+            "from": [ 14, 6, 7 ], 
+            "to": [ 16, 11, 9 ], 
+            "faces": {
+                "north": { "texture": "#light_gray_stained_glass", "uv": [ 0, 0, 2, 5 ] },
+                "east": { "texture": "#light_gray_stained_glass", "uv": [ 12, 11, 14, 16 ] },
+                "south": { "texture": "#light_gray_stained_glass", "uv": [ 14, 0, 16, 5 ] },
+                "up": { "texture": "#light_gray_stained_glass", "uv": [ 14, 1, 16, 3 ] },
+                "down": { "texture": "#light_gray_stained_glass", "uv": [ 14, 1, 16, 3 ] }
+            }
+        },
+        {
+            "name": "Top_1",
+            "from": [ 2, 12, 3 ], 
+            "to": [ 12, 13, 13 ], 
+            "faces": {
+                "north": { "texture": "#light_gray_stained_glass", "uv": [ 0, 0, 10, 1 ] },
+                "east": { "texture": "#light_gray_stained_glass", "uv": [ 0, 0, 10, 1 ] },
+                "south": { "texture": "#light_gray_stained_glass", "uv": [ 0, 0, 10, 1 ] },
+                "west": { "texture": "#light_gray_stained_glass", "uv": [ 0, 0, 10, 1 ] },
+                "up": { "texture": "#light_gray_stained_glass", "uv": [ 1, 1, 11, 11 ] }
+            }
+        },
+        {
+            "name": "Stopper",
+            "from": [ 6, 12, 7 ], 
+            "to": [ 8, 14, 9 ], 
+            "faces": {
+                "north": { "texture": "#acacia_planks", "uv": [ 0, 0, 2, 2 ] },
+                "east": { "texture": "#acacia_planks", "uv": [ 0, 0, 2, 2 ] },
+                "south": { "texture": "#acacia_planks", "uv": [ 0, 0, 2, 2 ] },
+                "west": { "texture": "#acacia_planks", "uv": [ 0, 0, 2, 2 ] },
+                "up": { "texture": "#acacia_planks", "uv": [ 0, 0, 2, 2 ] },
+                "down": { "texture": "#acacia_planks", "uv": [ 0, 0, 2, 2 ] }
+            }
+        }
+    ]
+}

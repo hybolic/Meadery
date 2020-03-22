@@ -1,0 +1,9 @@
+{
+	"type":"meadery:fermentation_ingredient",
+	"fermentation_type":"fruit",
+	"ingredient":
+	{
+		"item": "minecraft:enchanted_golden_apple"
+	},
+	"sugar":40
+}

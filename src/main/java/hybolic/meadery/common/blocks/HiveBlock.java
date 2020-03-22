@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import hybolic.meadery.MeaderyMod;
 import hybolic.meadery.common.items.ModItems;
 import net.minecraft.block.Block;
@@ -13,7 +15,6 @@ import net.minecraft.block.CampfireBlock;
 import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
@@ -23,6 +24,7 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Mirror;
@@ -31,9 +33,10 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootParameters;
+import net.minecraft.world.server.ServerWorld;
 
 public class HiveBlock extends Block {
 
@@ -41,11 +44,13 @@ public class HiveBlock extends Block {
 	public static final BooleanProperty HIBERNATING = BooleanProperty.create("hibernating");
 	public static final IntegerProperty HONEY_AMOUNT = IntegerProperty.create("amount", 0, 15);
 	// public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 30);
-
-	public HiveBlock() {
+	
+	public HiveBlock(String id)
+	{
 		super(Block.Properties.create(Material.WOOD, MaterialColor.GOLD).tickRandomly().hardnessAndResistance(0.4F));
 		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(HIBERNATING, false));
-		this.setRegistryName(MeaderyMod.MODID, "hive");
+		this.setRegistryName(MeaderyMod.MODID, id);
+		
 	}
 
 	public void tick(BlockState state, World worldIn, BlockPos pos, Random random) {
@@ -95,7 +100,7 @@ public class HiveBlock extends Block {
 	}
 
 	public boolean hasComparatorInputOverride(BlockState state) {
-		return true;
+		return state.getBlock() == ModBlocks.hiveBlock;
 	}
 	
 	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
@@ -107,13 +112,13 @@ public class HiveBlock extends Block {
 		if (LowerBlock.getBlock() == Blocks.CAMPFIRE)
 			if (LowerBlock.get(CampfireBlock.LIT))
 				return;
-		// spawn angry bees!!
+		// spawn bee swarm!!
 	}
 
-	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-		Entity entity = builder.get(LootParameters.THIS_ENTITY);
+	public static List<ItemStack> getDrops(BlockState state, ServerWorld worldIn, BlockPos pos, @Nullable TileEntity tileEntityIn) {
+		//Entity entity = builder.get(LootParameters.THIS_ENTITY);
 		List<ItemStack> items = new ArrayList<ItemStack>();
-		ItemStack hive = new ItemStack(this);
+		ItemStack hive = new ItemStack(state.getBlock());
 		CompoundNBT DETAILS = new CompoundNBT();
 		DETAILS.putInt("amount", state.get(HONEY_AMOUNT));
 		DETAILS.putBoolean("hibernating", state.get(HIBERNATING));
@@ -121,6 +126,19 @@ public class HiveBlock extends Block {
 		items.add(hive);
 		return items;
 	}
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
+    {
+    	if(player.isSneaking())
+    	{
+			ItemStack hive = new ItemStack(state.getBlock());
+			CompoundNBT DETAILS = new CompoundNBT();
+			DETAILS.putInt("amount", state.get(HONEY_AMOUNT));
+			DETAILS.putBoolean("hibernating", state.get(HIBERNATING));
+			hive.setTag(DETAILS);
+	        return hive;
+    	}
+    	return super.getPickBlock(state, target, world, pos, player);
+    }
 
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(FACING);

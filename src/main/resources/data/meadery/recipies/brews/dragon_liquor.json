@@ -1,0 +1,16 @@
+{
+	"type":"meadery:brew",
+	"name":"dragon_liquor",
+	"ingredients":
+	[
+		{
+			"fermentation_type" : "strange_dragon",
+			"count" : 2
+		},
+		{
+			"fermentation_type" : "strange",
+			"count" : 3
+		}
+	],
+	"needs_water":true
+}

@@ -1,0 +1,9 @@
+{
+	"type":"meadery:fermentation_ingredient",
+	"fermentation_type":"strange",
+	"ingredient":
+	{
+		"item": "minecraft:netherwart"
+	},
+	"sugar":0
+}

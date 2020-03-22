@@ -1,0 +1,9 @@
+{
+	"type":"meadery:fermentation_ingredient",
+	"fermentation_type":"grain",
+	"ingredient":
+	{
+		"item": "minecraft:wheat"
+	},
+	"sugar":10
+}

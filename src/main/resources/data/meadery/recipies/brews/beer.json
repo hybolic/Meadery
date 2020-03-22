@@ -1,10 +1,10 @@
 {
 	"type":"meadery:brew",
-	"name":"mead",
+	"name":"beer",
 	"ingredients":
 	[
 		{
-			"fermentation_type" : "honey",
+			"fermentation_type" : "grain",
 			"count" : 4
 		}
 	],

@@ -1,0 +1,54 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model":"meadery:block/bee_nest"
+	},
+    "variants": {
+	    "facing":
+	    {
+		    "north":
+		    {
+		    	"model":"meadery:block/bee_nest"
+		    },
+		    "south":
+		    {
+		    	"model" : "meadery:block/bee_nest",
+		    	"y"     : 180
+		    },
+		    "west":
+		    {
+		    	"model" : "meadery:block/bee_nest",
+		    	"y"     : 270
+		    },
+		    "east":
+		    {
+		    	"model" : "meadery:block/bee_nest",
+		    	"y"     : 90
+		    }
+	    },
+	    "amount" :
+	    {
+	    	"0"  : { "textures" : { "front": "meadery:block/bee_nest_front" } },
+	    	"1"  : { "textures" : { "front": "meadery:block/bee_nest_front" } },
+	    	"2"  : { "textures" : { "front": "meadery:block/bee_nest_front" } },
+	    	"3"  : { "textures" : { "front": "meadery:block/bee_nest_front" } },
+	    	"4"  : { "textures" : { "front": "meadery:block/bee_nest_front" } },
+	    	"5"  : { "textures" : { "front": "meadery:block/bee_nest_front" } },
+	    	"6"  : { "textures" : { "front": "meadery:block/bee_nest_front_honey" } },
+	    	"7"  : { "textures" : { "front": "meadery:block/bee_nest_front_honey" } },
+	    	"8"  : { "textures" : { "front": "meadery:block/bee_nest_front_honey" } },
+	    	"9"  : { "textures" : { "front": "meadery:block/bee_nest_front_honey" } },
+	    	"10" : { "textures" : { "front": "meadery:block/bee_nest_front_honey" } },
+	    	"11" : { "textures" : { "front": "meadery:block/bee_nest_front_honey" } },
+	    	"12" : { "textures" : { "front": "meadery:block/bee_nest_front_honey" } },
+	    	"13" : { "textures" : { "front": "meadery:block/bee_nest_front_honey" } },
+	    	"14" : { "textures" : { "front": "meadery:block/bee_nest_front_honey" } },
+	    	"15" : { "textures" : { "front": "meadery:block/bee_nest_front_honey" } }
+	    },
+	    "hibernating":
+	    {
+		    "true":{"textures" : { "top": "meadery:block/bee_nest_front_honey" }},
+		    "false":{"textures" : { "top": "meadery:block/bee_nest_front_honey" }}
+	    }
+    }
+}

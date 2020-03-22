@@ -1,11 +1,15 @@
 {
 	"type":"meadery:brew",
-	"name":"mead",
+	"name":"melomel",
 	"ingredients":
 	[
 		{
 			"fermentation_type" : "honey",
 			"count" : 4
+		},
+		{
+			"fermentation_type" : "fruit",
+			"count" : 1
 		}
 	],
 	"needs_water":true

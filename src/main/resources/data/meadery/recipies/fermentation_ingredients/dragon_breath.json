@@ -1,0 +1,9 @@
+{
+	"type":"meadery:fermentation_ingredient",
+	"fermentation_type":"strange_dragon",
+	"ingredient":
+	{
+		"item": "minecraft:dragon_breath"
+	},
+	"sugar":-10
+}
