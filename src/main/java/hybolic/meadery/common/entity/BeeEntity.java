@@ -27,6 +27,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
+@SuppressWarnings("unused")
 public class BeeEntity extends AnimalEntity implements IFlyingAnimal {
 
 	public static final ResourceLocation pollinateSFX = new ResourceLocation("meadery", "entity.bee.pollinate");

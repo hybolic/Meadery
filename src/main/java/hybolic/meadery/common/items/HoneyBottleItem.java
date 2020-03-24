@@ -7,6 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Food;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
@@ -19,8 +20,8 @@ import net.minecraft.world.World;
 
 public class HoneyBottleItem extends Item {
 
-	public HoneyBottleItem(String id) {
-		super(new Item.Properties().group(BasicItem.MeaderyGroup).food(new Food.Builder().hunger(6).saturation(0.1f).build()).containerItem(Items.GLASS_BOTTLE));
+	public HoneyBottleItem(String id, ItemGroup group) {
+		super(new Item.Properties().group(group).food(new Food.Builder().hunger(6).saturation(0.1f).build()).containerItem(Items.GLASS_BOTTLE));
 		this.setRegistryName(MeaderyMod.MODID, id);
 	}
 	

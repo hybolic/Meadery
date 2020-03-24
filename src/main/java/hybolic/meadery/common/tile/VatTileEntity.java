@@ -4,18 +4,18 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.registries.ObjectHolder;
 
-public class DemijohnSmallTileEntity extends FermentationTileEntity {
+public class VatTileEntity extends FermentationTileEntity {
 
-	@ObjectHolder("meadery:demi_small")
+	@ObjectHolder("meadery:vat")
     public static TileEntityType<?> TILE;
 	
-	public DemijohnSmallTileEntity()
+	public VatTileEntity()
 	{
-		super(TILE,4);
+		super(TILE,256);
 	}
 
 	@Override
 	void pushBubbles() {
-		world.addParticle(ParticleTypes.BUBBLE_POP, pos.getX()+.5, pos.getY()+.5, pos.getZ()+.5, 0, 0.1, 0);
+		world.addParticle(ParticleTypes.BUBBLE_POP, pos.getX(), pos.getY(), pos.getZ(), 0, 0, 0);
 	}
 }

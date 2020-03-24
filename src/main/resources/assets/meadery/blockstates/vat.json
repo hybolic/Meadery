@@ -1,0 +1,9 @@
+{
+	"variants":
+	{
+		"block_part=lower,sealed=true"  : { "model": "meadery:block/vat_bottom"},
+		"block_part=lower,sealed=false"  : { "model": "meadery:block/vat_bottom_open"},
+		"block_part=upper,sealed=true"  : { "model": "meadery:block/vat_top"},
+		"block_part=upper,sealed=false"  : { "model": "meadery:block/vat_top_open"}
+	}
+}

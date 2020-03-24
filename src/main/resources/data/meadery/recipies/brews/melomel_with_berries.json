@@ -8,8 +8,8 @@
 			"count" : 3
 		},
 		{
-			"fermentation_type" : "berry",
-			"count" : 2
+			"fermentation_type" : "fruit",
+			"count" : 1
 		}
 	],
 	"needs_water":true

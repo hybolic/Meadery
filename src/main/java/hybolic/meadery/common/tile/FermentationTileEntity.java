@@ -2,8 +2,8 @@ package hybolic.meadery.common.tile;
 
 import javax.annotation.Nonnull;
 
-import hybolic.meadery.common.CulturableFoods;
 import hybolic.meadery.common.blocks.AbstractFermentationBlock;
+import hybolic.meadery.common.recipe.Ferment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.IInventory;
@@ -18,7 +18,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
-public abstract class FermentationStationTileEntity extends TileEntity implements IInventory, IFluidTank, ITickableTileEntity {
+public abstract class FermentationTileEntity extends TileEntity implements IInventory, IFluidTank, ITickableTileEntity {
 	/*
 	 * slot 1: additions
 	 * slot 2: ^
@@ -27,22 +27,22 @@ public abstract class FermentationStationTileEntity extends TileEntity implement
 	 * slot 5: culture
 	 * slot 6: output
 	 */
-	private NonNullList<ItemStack> INVENTORY = NonNullList.withSize(6, ItemStack.EMPTY);
-	private FluidStack FLUID = FluidStack.EMPTY;
-	private boolean LOCKED = false;
-	private int CAPACITY = 0;
+	public NonNullList<ItemStack> INVENTORY = NonNullList.withSize(6, ItemStack.EMPTY);
+	public FluidStack FLUID = FluidStack.EMPTY;
+	public boolean LOCKED = true;
+	public int CAPACITY = 0;
 	/*
 	 * age in ticks
 	 */
-	private int AGE = 0;
+	public long AGE = 0;
 
 	// 250mb is one bottle
-	public FermentationStationTileEntity(TileEntityType<?> tile, int capInBottles) {
+	public FermentationTileEntity(TileEntityType<?> tile, int capInBottles) {
 		super(tile);
 		CAPACITY = 250 * capInBottles;
 	}
 	
-	public FermentationStationTileEntity() {
+	public FermentationTileEntity() {
 		this(null, 0);
 	}
 
@@ -61,7 +61,7 @@ public abstract class FermentationStationTileEntity extends TileEntity implement
 	//// IInventory////
 	public boolean canAddItem(ItemStack stack)
 	{
-		if(CulturableFoods.isCulturableFood(stack))
+		if(Ferment.getFromItem(getWorld(), stack) != null)
 		{
 			for(int i = 0; i < 4; i++)
 			{
@@ -255,30 +255,46 @@ public abstract class FermentationStationTileEntity extends TileEntity implement
 	/// ITickableTileEntity
 	@Override
 	public void tick() {
-		if (LOCKED)
-			this.AGE++;
-		if(FLUID.getAmount() == this.getCapacity())
+		if(this.getStackInSlot(4).isEmpty() == false && world.isRemote())
 		{
-			//check inventory
+			if(0 == world.getRandom().nextInt(10))
+				pushBubbles();
+		}
+		if(!world.isRemote()) {
+			if (LOCKED && !this.getStackInSlot(4).isEmpty())
+			{
+				int i = ((world.getGameTime() % 20 == 0) ? 1 : 0);
+				if(i>0)
+					this.AGE = AGE + i;
+			}
+			if(FLUID.getAmount() == this.getCapacity())
+			{
+				//check inventory
+			}
 		}
 	}
-
+	abstract void pushBubbles();
+	
 	// IForgeTileEntity
 	public void read(CompoundNBT compound) {
 		FLUID = FluidStack.loadFluidStackFromNBT(compound);
-		ItemStackHelper.loadAllItems(compound, INVENTORY);
-		LOCKED = compound.getBoolean("locked");
-		CAPACITY = compound.getInt("capacity");
-		AGE = compound.getInt("age");
+		ItemStackHelper.loadAllItems(compound.getCompound("items"), INVENTORY);
+		if(compound.contains("locked"))
+			LOCKED = compound.getBoolean("locked");
+		if(compound.contains("capacity"))
+			CAPACITY = compound.getInt("capacity");
+		if(compound.contains("age"))
+			AGE = compound.getLong("age");
 		super.read(compound);
 	}
 
 	public CompoundNBT write(CompoundNBT compound) {
 		FLUID.writeToNBT(compound);
-		ItemStackHelper.saveAllItems(compound, INVENTORY, false);
+		compound.put("items",ItemStackHelper.saveAllItems(new CompoundNBT(), INVENTORY, true));
 		compound.putBoolean("locked", LOCKED);
 		compound.putInt("capacity", CAPACITY);
-		compound.putInt("age", AGE);
-		return super.write(compound);
+		compound.putLong("age", AGE);
+		super.write(compound);
+		return compound;
 	}
 }

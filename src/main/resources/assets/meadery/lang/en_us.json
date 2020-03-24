@@ -1,0 +1,20 @@
+{
+	"meadery.text.age_hours"		: "%s hours old!",
+	"meadery.text.age_days"			: "%s days old!",
+	"meadery.text.age_weeks"		: "%s weeks old!",
+	"meadery.text.age_months"		: "%s months old!",
+	"meadery.text.age_years" 		: "%s years old!",
+	"meadery.text.age_detail"		: "in Minecraft\u2122 time!",
+	"block.meadery.demi_small"		: "Small Demijohn",
+	"block.meadery.demi_large"		: "Large Demijohn",
+	"block.meadery.vat"				: "Brewing Vat",
+	"block.meadery.barrel"			: "Barrel",
+	"block.meadery.wild_hive"		: "Wild Bee Nest",
+	"block.meadery.verticle_hive"	: "Bee Hive",
+	"item.meadery.honey"			: "Bottle of Honey",
+	"item.meadery.honey_comb"		: "Honey Comb",
+	"item.meadery.yeast_culture"	: "Yeast Culture",
+	"itemGroup.meadery.ferments"	: "Fermentable Products",
+	"itemGroup.meadery.bees"		: "BEEEEEES",
+	"itemGroup.meadery.brewery"		: "Brewery"
+}

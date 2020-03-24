@@ -1,9 +1,0 @@
-{
-	"type":"meadery:fermentation_ingredient",
-	"fermentation_type":"fruit",
-	"ingredient":
-	{
-		"item": "minecraft:sweetberry"
-	}
-	"sugar":85
-}

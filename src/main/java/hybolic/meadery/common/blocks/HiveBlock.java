@@ -74,15 +74,20 @@ public class HiveBlock extends Block {
 
 	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
 			BlockRayTraceResult hit) {
-		if (ItemStack.areItemsEqualIgnoreDurability(player.getHeldItem(hand), Items.SHEARS.getDefaultInstance())) {
-			if (player.getHeldItem(hand).getDamage() > 1) {
+		if (player.getHeldItem(hand).getItem() == Items.SHEARS && state.get(HONEY_AMOUNT) > 0) {
+			MeaderyMod.LOGGER.info(player.getHeldItem(hand).getDamage());
+			if (player.getHeldItem(hand).getDamage() < player.getHeldItem(hand).getMaxDamage()) {
 				checkIfSmoked(state, world, pos);
 				player.getHeldItem(hand).damageItem(1, player, e -> e.sendBreakAnimation(hand));
-				spawnAsEntity(world, pos, new ItemStack(ModItems.HoneyComb, 3));
+				if (!player.inventory.addItemStackToInventory(new ItemStack(ModItems.HoneyComb, 3))) {
+					player.dropItem(new ItemStack(ModItems.Honey), false);
+				}
+				state = state.with(HONEY_AMOUNT, state.get(HONEY_AMOUNT).intValue() - 1);
+				world.setBlockState(pos, state);
 				return true;
 			}
 		} else if (ItemStack.areItemsEqualIgnoreDurability(player.getHeldItem(hand),
-				Items.GLASS_BOTTLE.getDefaultInstance()) && state.get(HONEY_AMOUNT).intValue() > 0) {
+				Items.GLASS_BOTTLE.getDefaultInstance()) && state.get(HONEY_AMOUNT) > 0) {
 			state = state.with(HONEY_AMOUNT, state.get(HONEY_AMOUNT).intValue() - 1);
 			world.setBlockState(pos, state);
 			checkIfSmoked(state, world, pos);
