@@ -46,19 +46,8 @@ public class RecipeGrabber<T extends IRecipe<?>>
     private static Field recipes;
 
     static {
-    	try {
-    		Field temp = ObfuscationReflectionHelper.findField(RecipeManager.class, "field_199522_d");
-        	temp.setAccessible(true);
-
-            recipes = temp;
-    	}
-    	catch(Exception e)
-    	{
-		Field temp = ObfuscationReflectionHelper.findField(RecipeManager.class, "recipes");
-    	temp.setAccessible(true);
-
-        recipes = temp;
-    	}
+    	recipes = ObfuscationReflectionHelper.findField(RecipeManager.class, "field_199522_d");
+    	recipes.setAccessible(true);;
     }
     
     public Map<ResourceLocation, T> getRecipes(RecipeManager manager) {
