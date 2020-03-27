@@ -4,12 +4,13 @@ import javax.annotation.Nullable;
 
 import hybolic.meadery.MeaderyMod;
 import hybolic.meadery.common.items.ModItems;
-import hybolic.meadery.common.recipe.Brew;
 import hybolic.meadery.common.recipe.Ferment;
-import hybolic.meadery.common.recipe.FermentationIngredient;
+import hybolic.meadery.common.recipe.FermentSerializer;
 import hybolic.meadery.common.tile.FermentationTileEntity;
+import hybolic.meadery.common.util.RecipeGrabber;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ILiquidContainer;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -20,6 +21,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
@@ -36,8 +38,9 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.minecraftforge.registries.ObjectHolder;
 
-public abstract class AbstractFermentationBlock extends Block implements IWaterLoggable
+public abstract class AbstractFermentationBlock extends Block implements IWaterLoggable, ILiquidContainer
 {
 	public static final BooleanProperty   WATER_LOGGED = BlockStateProperties.WATERLOGGED;
 	public static BooleanProperty SEALED     = BooleanProperty.create("sealed");
@@ -115,39 +118,24 @@ public abstract class AbstractFermentationBlock extends Block implements IWaterL
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 
+    @ObjectHolder("meadery:fermentation_ingredient")
+    public static FermentSerializer FERMENT;
+    
 	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if(state.get(WATER_LOGGED))
 			return false;
 		if(state.get(DECORATIVE) == false)
 		{
-			MeaderyMod.LOGGER.info(Ferment.getFermentData(world.getRecipeManager()));
-			for(Ferment ferm : Ferment.getFermentData(world.getRecipeManager()))
-			{
-				try {
-				MeaderyMod.LOGGER.info(ferm.fermentation_type.getName() + " " + ferm.ingredient);
-				}finally {
-					MeaderyMod.LOGGER.info("ERROR");}
-			}
-			for(Brew brew : Brew.getBrewData(world.getRecipeManager()))
-			{
-				try {
-				String list = "";
-				for(FermentationIngredient i : brew.ingredients)
-				{
-					list += "{" + i.fermentation_type.getName() + ":" + i.count + "}";
-				}
-				MeaderyMod.LOGGER.info(brew.name + ":[" + list + "]");
-				}finally {
-				MeaderyMod.LOGGER.info("ERROR");}
-			}
+			Ferment test = RecipeGrabber.getFerment().getRecipeStream(world.getRecipeManager()).filter(recipe -> recipe.ingredient.test(player.getHeldItem(hand))).findFirst().orElse(null);
+			if(test != null)
+				;
 			
 			FermentationTileEntity tile = (FermentationTileEntity) world.getTileEntity(pos);
+			if(tile == null)
+				return true;
 			if(player.getHeldItem(hand).isEmpty())
 			{
-				if(tile!=null)
-					tile.toggleLock();
-				else
-					toggleBlockstateSealed(world, pos, state);
+				tile.toggleLock();
 				return true;
 			}
 			else {
@@ -161,8 +149,29 @@ public abstract class AbstractFermentationBlock extends Block implements IWaterL
 						{
 							if(tile.fill(stack, FluidAction.SIMULATE) > 0)
 							{
-								int removed = tile.fill(stack, FluidAction.EXECUTE);
-								stack.setAmount(stack.getAmount() - removed);
+								tile.fill(stack, FluidAction.EXECUTE);
+								if(player.isCreative() == false)
+								{
+									player.setHeldItem(hand, Items.BUCKET.getDefaultInstance().copy());
+								}
+								return true;
+							}
+						}
+						else
+						{
+							FluidStack removed = tile.drain(1000, FluidAction.SIMULATE);
+							if(removed.getAmount() == 1000)
+							{
+								tile.drain(1000, FluidAction.EXECUTE);
+								if(player.isCreative() == false)
+								{
+									player.getHeldItem(hand).shrink(1);
+									if (player.getHeldItem(hand).getCount() <= 0 )
+										player.setHeldItem(hand, ItemStack.EMPTY);
+									if (!player.inventory.addItemStackToInventory(Items.WATER_BUCKET.getDefaultInstance().copy())) {
+										player.dropItem(Items.WATER_BUCKET.getDefaultInstance().copy(), false);
+									}
+								}
 								return true;
 							}
 						}
@@ -184,6 +193,7 @@ public abstract class AbstractFermentationBlock extends Block implements IWaterL
 							return true;
 						}
 					}
+					return true;
 				}
 			}
 		}

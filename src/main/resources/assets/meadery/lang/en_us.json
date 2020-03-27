@@ -16,5 +16,7 @@
 	"item.meadery.yeast_culture"	: "Yeast Culture",
 	"itemGroup.meadery.ferments"	: "Fermentable Products",
 	"itemGroup.meadery.bees"		: "BEEEEEES",
-	"itemGroup.meadery.brewery"		: "Brewery"
+	"itemGroup.meadery.brewery"		: "Brewery",
+	"meadery.melomel.berries"		: "with Berries!",
+	"meadery.melomel.fruit"			: "with Fruit!"
 }

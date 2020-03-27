@@ -19,8 +19,11 @@ public class BarrelTileEntity extends FermentationTileEntity {
 	void pushBubbles() {
 		if(getBlockState().get(AbstractFermentationBlock.SEALED))
 			world.addParticle(ParticleTypes.BUBBLE_POP, pos.getX() + 0.5, pos.getY() + 0.9375f, pos.getZ() + 0.5, 0, 0.1, 0);
-		else if(world.rand.nextInt(3) == 0)
-			world.addParticle(ParticleTypes.BUBBLE_POP, pos.getX() + (1f / 16f * (world.rand.nextInt(14)+1)), pos.getY() + 0.875f, pos.getZ() + (1f / 16f * (world.rand.nextInt(14)+1)), 0, 0.1, 0);
+		else if(random.nextInt(3) == 0)
+		{
+			float calY = 0.875f * this.getFluidAmount() / (float)this.getCapacity();
+			world.addParticle(ParticleTypes.BUBBLE_POP, pos.getX() + (1f / 16f * (random.nextInt(14)+1)), pos.getY() + calY, pos.getZ() + (1f / 16f * (random.nextInt(14)+1)), 0, 0.1, 0);
+		}
 	}
 
 }

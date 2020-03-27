@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import hybolic.meadery.client.tesr.WaterRenderer;
 import hybolic.meadery.common.blocks.CultureStationBlock;
 import hybolic.meadery.common.blocks.DemijohnLargeBlock;
 import hybolic.meadery.common.blocks.DemijohnSmallBlock;
@@ -17,6 +18,8 @@ import hybolic.meadery.common.items.FermentedProduct;
 import hybolic.meadery.common.items.Group;
 import hybolic.meadery.common.items.HoneyBottleItem;
 import hybolic.meadery.common.items.ModItems;
+import hybolic.meadery.common.recipe.BrewSerializer;
+import hybolic.meadery.common.recipe.FermentSerializer;
 import hybolic.meadery.common.tile.BarrelTileEntity;
 import hybolic.meadery.common.tile.CultureStationTileEntity;
 import hybolic.meadery.common.tile.DemijohnLargeTileEntity;
@@ -31,6 +34,7 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -40,6 +44,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -63,7 +68,24 @@ public class MeaderyMod
     
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
+    	
+		@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    	public static class ClientRegistryEvents
+    	{
 
+            @SubscribeEvent
+            public static void onTileEntityRegistry(RegistryEvent.Register<TileEntityType<?>> event) {
+            	ClientRegistry.bindTileEntitySpecialRenderer(DemijohnSmallTileEntity.class, new WaterRenderer(0.001f,0.3745f,6f,6f,4f,4f));
+            	ClientRegistry.bindTileEntitySpecialRenderer(DemijohnLargeTileEntity.class, new WaterRenderer(0.001f,0.745f,0f,0f,14f,14f));
+            	ClientRegistry.bindTileEntitySpecialRenderer(BarrelTileEntity.class, new WaterRenderer(0.125f,0.875f,2f,2f,12f,12f));
+            	ClientRegistry.bindTileEntitySpecialRenderer(VatTileEntity.class, new WaterRenderer(0.1876f,1.8125f,1f,1f,14f,14f));
+            }
+    	}
+    	
+		@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.DEDICATED_SERVER)
+    	public static class ServerRegistryEvents
+    	{
+    	}
 //        @ObjectHolder("meadery:bee")
 //    	public static EntityType<BeeEntity> BEE;
         
@@ -79,6 +101,7 @@ public class MeaderyMod
         	r.register(new CultureStationBlock("culture_station"));
         	r.register(new FermentationVatBlock("vat"));
         }
+        
         @SubscribeEvent
         public static void onItemsRegistry(final RegistryEvent.Register<Item> event)
         {
@@ -115,7 +138,7 @@ public class MeaderyMod
         }
         
         @SubscribeEvent
-        public static void onBlockColorRegistry(final ColorHandlerEvent.Item event)
+        public static void onItemColorRegistry(final ColorHandlerEvent.Item event)
         {
         }
         
@@ -142,8 +165,10 @@ public class MeaderyMod
         @SubscribeEvent
         public static void onRegisterRecipeTypes (Register<IRecipeSerializer<?>> event)
         {
-        	//event.getRegistry().register(Registry.register(Registry.RECIPE_TYPE, BrewSerializer.getRegistry(), BrewSerializer.INSTANCE));
-        	//event.getRegistry().register(Registry.register(Registry.RECIPE_TYPE, BrewSerializer.getRegistry(), FermentSerializer.INSTANCE));
+        	BrewSerializer.INSTANCE = new BrewSerializer();
+        	FermentSerializer.INSTANCE = new FermentSerializer();
+        	event.getRegistry().register(Registry.register(Registry.RECIPE_TYPE, BrewSerializer.getRegistry(),    BrewSerializer.INSTANCE));
+        	event.getRegistry().register(Registry.register(Registry.RECIPE_TYPE, FermentSerializer.getRegistry(), FermentSerializer.INSTANCE));
         }
 
         public static <T extends IRecipe<?>> IRecipeType<T> registerRecipeType (String typeId) {

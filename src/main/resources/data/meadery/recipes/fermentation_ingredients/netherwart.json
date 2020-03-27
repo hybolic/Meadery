@@ -3,7 +3,7 @@
 	"fermentation_type":"strange",
 	"ingredient":
 	{
-		"item": "minecraft:netherwart"
+		"item": "minecraft:nether_wart"
 	},
 	"sugar":0
 }

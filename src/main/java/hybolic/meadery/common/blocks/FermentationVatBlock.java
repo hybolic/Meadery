@@ -70,10 +70,6 @@ public class FermentationVatBlock extends AbstractFermentationBlock implements I
 	      if (blockstate.getBlock() == this && blockstate.get(DoubleBlock_Half) != doubleblockhalf) {
 	         worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 35);
 	         worldIn.playEvent(player, 2001, blockpos, Block.getStateId(blockstate));
-	         if (!worldIn.isRemote && !player.isCreative()) {
-	            //spawnDrops(state, worldIn, pos, (TileEntity)null, player, player.getHeldItemMainhand());
-	            //spawnDrops(blockstate, worldIn, blockpos, (TileEntity)null, player, player.getHeldItemMainhand());
-	         }
 	      }
 	      super.onBlockHarvested(worldIn, pos, state, player);
 	}
@@ -81,11 +77,17 @@ public class FermentationVatBlock extends AbstractFermentationBlock implements I
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		worldIn.setBlockState(pos.up(), state.with(DoubleBlock_Half, DoubleBlockHalf.UPPER));
 	}
-   
 	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if(state.get(DoubleBlock_Half) == DoubleBlockHalf.UPPER)
+		{
 			return onBlockActivated(world.getBlockState(pos.down()),world,pos.down(),player,hand,hit);
-		return super.onBlockActivated(state,world,pos,player,hand,hit);
+		}
+		else
+		{
+			boolean temp = super.onBlockActivated(state,world,pos,player,hand,hit);
+			world.setBlockState(pos.up(), world.getBlockState(pos).with(DoubleBlock_Half, DoubleBlockHalf.UPPER));
+			return temp;
+		}
 	}
 
 	@Override

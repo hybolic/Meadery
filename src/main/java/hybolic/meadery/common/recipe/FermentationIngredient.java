@@ -3,6 +3,7 @@ package hybolic.meadery.common.recipe;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -20,18 +21,18 @@ public class FermentationIngredient
 	}
 	
 
-	public static FermentationIngredient[] deserializer(JsonObject json) {
+	public static FermentationIngredient[] deserializer(JsonArray json) {
 		if(json.isJsonArray())
 		{
 			List<FermentationIngredient> list = new ArrayList<FermentationIngredient>();
 			for(JsonElement element : json.getAsJsonArray())
 			{
 				JsonObject item = element.getAsJsonObject();
-				final FermentationType fermentation_type = FermentationType.valueOf(item.get("fermentation_type").getAsString());
+				final FermentationType fermentation_type = FermentationType.valueOf_(item.get("fermentation_type").getAsString());
 				final int count =  item.get("count").getAsInt();
 				list.add(new FermentationIngredient(fermentation_type, count));
 			}
-			return (FermentationIngredient[]) list.toArray();
+			return list.toArray(new FermentationIngredient[list.size()]);
 	    }
 		return new FermentationIngredient[] {};
 	}
@@ -45,12 +46,12 @@ public class FermentationIngredient
 			FermentationIngredient in = deserializer_single(buffer);
 			list.add(in);
 		}
-		return (FermentationIngredient[]) list.toArray();
+		return list.toArray(new FermentationIngredient[list.size()]);
 	}
 
 	public static FermentationIngredient deserializer_single(PacketBuffer buffer)
 	{
-		final FermentationType fermentation_type = FermentationType.valueOf(buffer.readString());
+		final FermentationType fermentation_type = FermentationType.valueOf_(buffer.readString());
 		final int count =  buffer.readInt();
 		return new FermentationIngredient(fermentation_type, count);
 	}

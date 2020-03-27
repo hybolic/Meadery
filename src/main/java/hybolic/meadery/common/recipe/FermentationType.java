@@ -9,7 +9,8 @@ public enum FermentationType implements IStringSerializable
 	SUGAR("sugar"),
 	HONEY("honey"),
 	STRANGE1("strange"),
-	STRANGE2("strange_dragon");
+	STRANGE2("strange_dragon"),
+	NULL("null");
 
 	
 	
@@ -22,5 +23,15 @@ public enum FermentationType implements IStringSerializable
 	@Override
 	public String getName() {
 		return name;
+	}
+	
+	public static FermentationType valueOf_(String s)
+	{
+		for(FermentationType ferm : values())
+		{
+			if(ferm.getName().equalsIgnoreCase(s))
+				return ferm;
+		}
+		return NULL;
 	}
 }

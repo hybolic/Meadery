@@ -12,5 +12,9 @@
 			"count" : 3
 		}
 	],
+	"result":
+	{
+		"item": "meadery:dragon_liquor"
+	},
 	"needs_water":true
 }

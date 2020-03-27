@@ -1,5 +1,6 @@
 package hybolic.meadery.common.tile;
 
+import hybolic.meadery.common.blocks.AbstractFermentationBlock;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.registries.ObjectHolder;
@@ -16,6 +17,10 @@ public class VatTileEntity extends FermentationTileEntity {
 
 	@Override
 	void pushBubbles() {
-		world.addParticle(ParticleTypes.BUBBLE_POP, pos.getX(), pos.getY(), pos.getZ(), 0, 0, 0);
+		if(getBlockState().get(AbstractFermentationBlock.SEALED) == false)
+		{
+			float calY = 1.9375f * this.getFluidAmount() / (float)this.getCapacity();
+			world.addParticle(ParticleTypes.BUBBLE_POP, pos.getX()+0.0625+(0.9375 * random.nextFloat()), pos.getY()+calY, pos.getZ()+0.0625+(0.9375 * random.nextFloat()), 0, 0, 0);
+		}
 	}
 }

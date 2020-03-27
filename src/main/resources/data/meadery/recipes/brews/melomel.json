@@ -12,5 +12,10 @@
 			"count" : 1
 		}
 	],
+	"result":
+	{
+		"item": "meadery:melomel",
+		"nbt" : "{display:{Lore:[\"{\\\"translate\\\":\\\"meadery.melomel.fruit\\\"}\"]}}"
+	},
 	"needs_water":true
 }

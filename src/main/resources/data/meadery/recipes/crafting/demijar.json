@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " # ",
+        "G G",
+        " G "
+    ],
+    "key": {
+        "#": {
+            "tag": "minecraft:planks"
+        },
+        "G": {
+            "tag": "forge:glass_panes"
+        }
+    },
+    "result": {
+        "item": "meadery:demi_small",
+        "count": 1
+    }
+}

@@ -1,9 +1,11 @@
 package hybolic.meadery.common.recipe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
+import hybolic.meadery.common.util.RecipeGrabber;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -61,13 +63,15 @@ public class Ferment implements IRecipe<IInventory>
 
     @Nullable
     public static List<Ferment> getFermentData (RecipeManager manager) {
-        
+    	List<Ferment> list = new ArrayList<Ferment>();
         if (manager != null) {
-            
-            return manager.getRecipes(FermentSerializer.INSTANCE, null, null);
+        	for(IRecipe<?> s : RecipeGrabber.getFerment().getRecipes(manager).values())
+        	{
+        		list.add((Ferment) s);
+        	}
         }
         
-        return null;
+        return list;
     }
     
     public static List<Ferment> getFermList(World world)

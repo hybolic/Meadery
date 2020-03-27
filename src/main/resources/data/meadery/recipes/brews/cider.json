@@ -8,5 +8,9 @@
 			"count" : 4
 		}
 	],
+	"result":
+	{
+		"item": "meadery:cider"
+	},
 	"needs_water":false
 }

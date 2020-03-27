@@ -8,5 +8,9 @@
 			"count" : 4
 		}
 	],
+	"result":
+	{
+		"item": "meadery:beer"
+	},
 	"needs_water":true
 }

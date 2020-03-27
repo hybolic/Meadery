@@ -12,10 +12,16 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 public class FermentSerializer extends ForgeRegistryEntry<IRecipeSerializer<?>>  implements IRecipeSerializer<Ferment>, IRecipeType<Ferment> {
 
-	public static final FermentSerializer INSTANCE = new FermentSerializer();
+	public static FermentSerializer INSTANCE;
 
 	public static ResourceLocation this_registry = new ResourceLocation(MeaderyMod.MODID, "fermentation_ingredient");
-	
+
+	public FermentSerializer()
+	{
+		super();
+		this.setRegistryName(getRegistry());
+	}
+    
 	public static ResourceLocation getRegistry() {
 		return this_registry;
 	}
@@ -27,16 +33,18 @@ public class FermentSerializer extends ForgeRegistryEntry<IRecipeSerializer<?>> 
 
 	@Override
 	public Ferment read(ResourceLocation recipeId, JsonObject json) {
+		MeaderyMod.LOGGER.info("JsonObject reader");
 		final Ingredient ing = Ingredient.deserialize(json.get("ingredient"));
 		final int sugar = json.get("sugar").getAsInt();
-		final FermentationType type = FermentationType.valueOf(json.get("fermentation_type").getAsString());
+		final FermentationType type = FermentationType.valueOf_(json.get("fermentation_type").getAsString());
 		return new Ferment(recipeId,type,ing,sugar);
 	}
 
 	@Override
 	public Ferment read(ResourceLocation recipeId, PacketBuffer buffer) {
+		MeaderyMod.LOGGER.info("PacketBuffer reader");
 		final Ingredient ing = Ingredient.read(buffer);
-		final FermentationType type = FermentationType.valueOf(buffer.readString());
+		final FermentationType type = FermentationType.valueOf_(buffer.readString());
 		final int sugar = buffer.readInt();
 		return new Ferment(recipeId,type,ing,sugar);
 	}

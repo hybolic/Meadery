@@ -3,7 +3,7 @@
 	"fermentation_type":"berry",
 	"ingredient":
 	{
-		"item": "minecraft:sweetberry"
-	}
+		"item": "minecraft:sweet_berries"
+	},
 	"sugar":85
 }
