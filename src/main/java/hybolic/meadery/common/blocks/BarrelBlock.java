@@ -18,12 +18,12 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class FermentationBarrelBlock extends AbstractFermentationBlock {
+public class BarrelBlock extends AbstractFermentationBlock {
 
 	public static BooleanProperty SEALED     = BooleanProperty.create("sealed");
 	public static BooleanProperty DECORATIVE = BooleanProperty.create("decorative");
 	
-	public FermentationBarrelBlock(String id) {
+	public BarrelBlock(String id) {
 		super(Material.WOOD, MaterialColor.WOOD, id, 0.5f);
 		this.setDefaultState(this.stateContainer.getBaseState().with(SEALED, true).with(DECORATIVE, true).with(WATER_LOGGED, false));
 	}

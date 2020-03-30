@@ -21,11 +21,11 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public abstract class DemijohnBlock extends AbstractFermentationBlock {
+public abstract class AbstractDemijohnBlock extends AbstractFermentationBlock {
 
 	public static final DirectionProperty FACING       = HorizontalBlock.HORIZONTAL_FACING;
 
-	public DemijohnBlock(String id) {
+	public AbstractDemijohnBlock(String id) {
 		super(Material.GLASS, MaterialColor.LIGHT_GRAY, id, 0f);
 		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(DECORATIVE, true).with(SEALED, true).with(WATER_LOGGED, false));
 	}

@@ -18,5 +18,6 @@
 	"itemGroup.meadery.bees"		: "BEEEEEES",
 	"itemGroup.meadery.brewery"		: "Brewery",
 	"meadery.melomel.berries"		: "with Berries!",
-	"meadery.melomel.fruit"			: "with Fruit!"
+	"meadery.melomel.fruit"			: "with Fruit!",
+	"death.attack.alcoholism"		: "%1$s drank themselves away, get some help!"
 }

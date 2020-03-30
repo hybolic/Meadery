@@ -3,7 +3,7 @@
 	"fermentation_type":"honey",
 	"ingredient":
 	{
-		"item": "minecraft:sugar"
+		"item": "meadery:honey"
 	},
-	"sugar":100
+	"sugar":70
 }

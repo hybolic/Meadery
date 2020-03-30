@@ -31,8 +31,6 @@ public class BrewSerializer extends ForgeRegistryEntry<IRecipeSerializer<?>>  im
 	@Override
 	public Brew read(ResourceLocation recipeId, JsonObject json)
 	{
-		MeaderyMod.LOGGER.info("JsonObject reader");
-		MeaderyMod.LOGGER.info(json);
 		final FermentationIngredient[] list = FermentationIngredient.deserializer(json.getAsJsonArray("ingredients"));
 		final String name = json.get("name").getAsString();
 		final boolean needs_water = json.get("needs_water").getAsBoolean();
@@ -44,7 +42,6 @@ public class BrewSerializer extends ForgeRegistryEntry<IRecipeSerializer<?>>  im
 	@Override
 	public Brew read(ResourceLocation recipeId, PacketBuffer buffer)
 	{
-		MeaderyMod.LOGGER.info("PacketBuffer reader");
 		final FermentationIngredient[] list = FermentationIngredient.deserializer(buffer);
 		final String name = buffer.readString();
 		final boolean needs_water = buffer.readBoolean();
@@ -57,7 +54,7 @@ public class BrewSerializer extends ForgeRegistryEntry<IRecipeSerializer<?>>  im
 		buffer.writeInt(recipe.ingredients.length);
 		for(FermentationIngredient i : recipe.ingredients)
 		{
-			FermentationIngredient.serialize(buffer, i);
+			i.serialize(buffer);
 		}
 		buffer.writeString(recipe.name);
 		buffer.writeBoolean(recipe.needs_water);

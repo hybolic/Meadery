@@ -1,0 +1,55 @@
+{
+    "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
+    "textures": {
+        "oak_planks": "minecraft:block/oak_planks",
+        "iron_block": "minecraft:block/iron_block",
+        "hay_block_top": "minecraft:block/hay_block_top",
+        "white_stained_glass": "minecraft:block/white_stained_glass"
+    },
+    "display": {
+        "gui": {
+            "rotation": [ 30, 45, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.625, 0.625, 0.625 ]
+        },
+        "ground": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 3, 0 ],
+            "scale": [ 0.25, 0.25, 0.25 ]
+        },
+        "fixed": {
+            "rotation": [ 0, 180, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 1, 1, 1 ]
+        },
+        "head": {
+            "rotation": [ 0, 180, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 1, 1, 1 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 0, 315, 0 ],
+            "translation": [ 0, 2.5, 0 ],
+            "scale": [ 0.4, 0.4, 0.4 ]
+        },
+        "thirdperson_righthand": {
+            "rotation": [ 75, 315, 0 ],
+            "translation": [ 0, 2.5, 0 ],
+            "scale": [ 0.375, 0.375, 0.375 ]
+        }
+    },
+    "elements": [
+        {
+            "name": "FOOD",
+            "from": [ 1.5, 11.4, 10.5 ], 
+            "to": [ 5.5, 12.4, 14.5 ], 
+            "faces": {
+                "north": { "texture": "#hay_block_top", "uv": [ 0, 0, 16, 1 ], "rotation": 180 },
+                "east": { "texture": "#hay_block_top", "uv": [ 15, 0, 16, 16 ], "rotation": 90 },
+                "south": { "texture": "#hay_block_top", "uv": [ 0, 15, 16, 16 ] },
+                "west": { "texture": "#hay_block_top", "uv": [ 0, 0, 1, 16 ], "rotation": 270 },
+                "up": { "texture": "#hay_block_top", "uv": [ 0, 0, 16, 16 ] }
+            }
+        }
+    ]
+}

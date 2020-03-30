@@ -11,11 +11,11 @@ public class ModBlocks {
 	@ObjectHolder("meadery:demi_large")
 	public static final DemijohnLargeBlock Demi_Large = null;
 	@ObjectHolder("meadery:barrel")
-	public static final FermentationBarrelBlock Barrel = null;
+	public static final BarrelBlock Barrel = null;
 	@ObjectHolder("meadery:vat")
-	public static final FermentationVatBlock VAT = null;
+	public static final VatBlock VAT = null;
 	
-	@ObjectHolder("meadery:culture_station")
+	@ObjectHolder("meadery:culture")
 	public static final Block CultureStation = null;
 	
 	@ObjectHolder("meadery:verticle_hive")

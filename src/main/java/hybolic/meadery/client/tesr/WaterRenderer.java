@@ -4,8 +4,8 @@ import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
+import hybolic.meadery.common.blocks.AbstractDemijohnBlock;
 import hybolic.meadery.common.blocks.AbstractFermentationBlock;
-import hybolic.meadery.common.blocks.DemijohnBlock;
 import hybolic.meadery.common.blocks.ModBlocks;
 import hybolic.meadery.common.tile.BarrelTileEntity;
 import hybolic.meadery.common.tile.FermentationTileEntity;
@@ -57,7 +57,7 @@ public class WaterRenderer extends TileEntityRenderer<FermentationTileEntity> {
 			//hard offsets
 			if(te.getBlockState().getBlock() == ModBlocks.Demi_Large)
 			{
-				switch(te.getBlockState().get(DemijohnBlock.FACING))
+				switch(te.getBlockState().get(AbstractDemijohnBlock.FACING))
 				{
 				case NORTH:
 					GlStateManager.translated(0.0625, 0, 0);
@@ -98,7 +98,12 @@ public class WaterRenderer extends TileEntityRenderer<FermentationTileEntity> {
 			Minecraft.getInstance().textureManager.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 			GlStateManager.disableCull();
 			GlStateManager.disableLighting();
-			float value = waterLevel * (te.getFluidAmount() / (float)te.getCapacity());
+			float value = waterLevel * ((float)te.getFluidAmount() / (float)te.getCapacity());
+			if(te.getStackInSlot(5).isEmpty() == false)
+			{
+				value = waterLevel;
+				GlStateManager.color3f(0.5f, 0.3f, 1f);
+			}
 			renderIcon(x_off, y_off, water_texture, x2_off, y2_off, value, 240);
 			GlStateManager.enableCull();
 			GlStateManager.enableAlphaTest();

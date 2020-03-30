@@ -1,5 +1,7 @@
 package hybolic.meadery.common.recipe;
 
+import java.util.List;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -66,9 +68,9 @@ public class Brew implements IRecipe<IInventory>
 			{
 				if(other == null || found)
 					;
-				else if(in.fermentation_type == other.fermentation_type && other.count >= in.count * bottles)
+				else if(in.fermentation_type.equals(other.fermentation_type))
 				{
-					needed -= in.count;
+					needed -= other.count;
 					if(needed < 0)
 					{
 						found = true;
@@ -80,5 +82,15 @@ public class Brew implements IRecipe<IInventory>
 				return false;
 		}
 		return x == ingredients.length;
+	}
+
+	public long sugarCount(List<Ferment> list)
+	{
+		long count = 0;
+		for(int i = 0; i < ingredients.length; i++)
+		{
+			count += ingredients[i].count;
+		}
+		return count;
 	}
 }

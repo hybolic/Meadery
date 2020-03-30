@@ -9,8 +9,8 @@ import hybolic.meadery.client.tesr.WaterRenderer;
 import hybolic.meadery.common.blocks.CultureStationBlock;
 import hybolic.meadery.common.blocks.DemijohnLargeBlock;
 import hybolic.meadery.common.blocks.DemijohnSmallBlock;
-import hybolic.meadery.common.blocks.FermentationBarrelBlock;
-import hybolic.meadery.common.blocks.FermentationVatBlock;
+import hybolic.meadery.common.blocks.BarrelBlock;
+import hybolic.meadery.common.blocks.VatBlock;
 import hybolic.meadery.common.blocks.HiveBlock;
 import hybolic.meadery.common.blocks.ModBlocks;
 import hybolic.meadery.common.items.BasicItem;
@@ -54,6 +54,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class MeaderyMod
 {
     // Directly reference a log4j logger.
+	@Deprecated
     public static final Logger LOGGER = LogManager.getLogger();
 	public static final String MODID = "meadery";
 
@@ -95,11 +96,11 @@ public class MeaderyMod
         	IForgeRegistry<Block> r = event.getRegistry();
         	r.register(new HiveBlock("verticle_hive"));
         	r.register(new HiveBlock("wild_hive"));
-        	r.register(new FermentationBarrelBlock("barrel"));
+        	r.register(new BarrelBlock("barrel"));
         	r.register(new DemijohnSmallBlock("demi_small"));
         	r.register(new DemijohnLargeBlock("demi_large"));
-        	r.register(new CultureStationBlock("culture_station"));
-        	r.register(new FermentationVatBlock("vat"));
+        	r.register(new CultureStationBlock("culture"));
+        	r.register(new VatBlock("vat"));
         }
         
         @SubscribeEvent
@@ -125,10 +126,7 @@ public class MeaderyMod
         	r.register(new BasicItem.TickingItemBlock("demi_small", ModBlocks.Demi_Small, Group.MEADERY));
         	r.register(new BasicItem.TickingItemBlock("demi_large", ModBlocks.Demi_Large, Group.MEADERY));
         	r.register(new BasicItem.ItemBlock("vat", ModBlocks.VAT, Group.MEADERY));
-        	
-        	
-        	
-        	r.register(new BasicItem.ItemBlock("culture_station", ModBlocks.CultureStation, Group.MEADERY));
+        	r.register(new BasicItem.ItemBlock("culture", ModBlocks.CultureStation, Group.MEADERY));
         }
         
         @SubscribeEvent
@@ -148,10 +146,7 @@ public class MeaderyMod
         	setupTileEntity(event.getRegistry(), DemijohnSmallTileEntity::new, ModBlocks.Demi_Small, "demi_small");
         	setupTileEntity(event.getRegistry(), DemijohnLargeTileEntity::new, ModBlocks.Demi_Large, "demi_large");
         	setupTileEntity(event.getRegistry(), VatTileEntity::new, ModBlocks.VAT, "vat");
-        	
-        	
-        	
-        	setupTileEntity(event.getRegistry(), CultureStationTileEntity::new, ModBlocks.CultureStation, "culture_station");
+        	setupTileEntity(event.getRegistry(), CultureStationTileEntity::new, ModBlocks.CultureStation, "culture");
         }
         
         private static TileEntityType<?> setupTileEntity(IForgeRegistry<TileEntityType<?>> registry, Supplier<? extends TileEntity> tile, Block block,String id)

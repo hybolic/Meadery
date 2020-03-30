@@ -1,13 +1,15 @@
 package hybolic.meadery.common.tile;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import hybolic.meadery.MeaderyMod;
 import hybolic.meadery.common.blocks.AbstractFermentationBlock;
 import hybolic.meadery.common.recipe.Brew;
 import hybolic.meadery.common.recipe.Ferment;
@@ -20,11 +22,13 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
@@ -60,22 +64,35 @@ public abstract class FermentationTileEntity extends TileEntity implements IInve
 
 	public void toggleLock() {
 		world.setBlockState(pos, this.getBlockState().with(AbstractFermentationBlock.SEALED, !this.getBlockState().get(AbstractFermentationBlock.SEALED)));
-		tryConvertInventory();
 	}
-
+	public static float roundAvoid(double value, int places) {
+	    double scale = Math.pow(10, places);
+	    return (float) (Math.round(value * scale) / scale);
+	}
 	private void tryConvertInventory() {
 		Collection<Brew> map = RecipeGrabber.getBrew().getRecipes(world.getRecipeManager()).values();
 		
-		
+		//rebuildFerm = true;
 		Brew current = new Brew(null, null, getList(), !FLUID.isEmpty(), null);
 		for(Brew brew : map)
 		{
 			if(brew.equalWithMultiply(current,getCapacityInBottles()))
 			{
-				MeaderyMod.LOGGER.info("BREW FOUND!");
-				//this.clear();
-				//ItemStack agedItem = new ItemStack(brew.result, getCapacityInBottles())
-				//this.setInventorySlotContents(5, agedItem);
+				float convert_amount = (Math.min(1f, (float)(AGE / 1200) / (float)24));
+				long sugars_perbottle = getSugar() / getCapacityInBottles();
+				float abv = (sugars_perbottle * convert_amount) / 20f;
+				
+				ItemStack agedItem = brew.result.copy();
+				
+				agedItem.setCount(getCapacityInBottles());
+				agedItem.setTag(new CompoundNBT());
+				agedItem.getTag().putFloat("ABV", roundAvoid(abv,2));
+				
+				clear();
+				
+				setInventorySlotContents(5, agedItem);
+				
+				return;
 			}
 		}
 	}
@@ -93,14 +110,43 @@ public abstract class FermentationTileEntity extends TileEntity implements IInve
 			if(in_1 != null)
 				list[0] = new FermentationIngredient(in_1.fermentation_type, getStackInSlot(0).getCount());
 			if(in_2 != null)
-				list[1] = new FermentationIngredient(in_2.fermentation_type, getStackInSlot(0).getCount());
+				list[1] = new FermentationIngredient(in_2.fermentation_type, getStackInSlot(1).getCount());
 			if(in_3 != null)
-				list[2] = new FermentationIngredient(in_3.fermentation_type, getStackInSlot(0).getCount());
+				list[2] = new FermentationIngredient(in_3.fermentation_type, getStackInSlot(2).getCount());
 			if(in_4 != null)
-				list[3] = new FermentationIngredient(in_4.fermentation_type, getStackInSlot(0).getCount());
+				list[3] = new FermentationIngredient(in_4.fermentation_type, getStackInSlot(3).getCount());
 			list = Arrays.stream(list).filter(new_ferment -> (new_ferment != null && new_ferment.fermentation_type != FermentationType.NULL)).toArray(FermentationIngredient[]::new);
 		}
 		return list;
+	}
+	private int getSugar() {
+		return getSugar(this.getWorld(), INVENTORY.subList(0, 3));
+	}
+	public static List<Ferment> getFermList(World world, List<ItemStack> itemList)
+	{
+		return getFermList(world, itemList, true);
+	}
+	public static List<Ferment> getFermList(World world, List<ItemStack> itemList, boolean excludeEmpty)
+	{
+		List<Ferment> list = new ArrayList<Ferment>();
+		for(ItemStack item : itemList)
+		list.add(RecipeGrabber.getFerment().getRecipeStream(world.getRecipeManager()).filter(recipe -> recipe.ingredient.test(item)).findFirst().orElse(null));
+		if(excludeEmpty)
+			list = list.stream().filter(item -> (item != null)).collect(Collectors.toList());
+		return list;
+	}
+	public static int getSugar(World world, List<ItemStack> itemList)
+	{
+		List<Ferment> ferm = getFermList(world, itemList, false);
+		int ints = 0;
+		for(int i = 0; i < ferm.size(); i++)
+		{
+			if(ferm.get(i) == null || itemList.get(i).isEmpty())
+				;
+			else
+				ints += ferm.get(i).sugar * itemList.get(i).getCount();
+		}
+		return ints;
 	}
 
 	//// IInventory////
@@ -125,7 +171,7 @@ public abstract class FermentationTileEntity extends TileEntity implements IInve
 	}
 	
 	public ItemStack addItem(ItemStack stack)
-	{
+	{	
 		if(canAddItem(stack))
 		{
 			for(int i = 0; i < 4; i++)
@@ -157,7 +203,7 @@ public abstract class FermentationTileEntity extends TileEntity implements IInve
 		INVENTORY.clear();
 		FLUID = FluidStack.EMPTY;
 		AGE = 0;
-		this.markDirty();
+		markDirty();
 	}
 
 	@Override
@@ -319,6 +365,7 @@ public abstract class FermentationTileEntity extends TileEntity implements IInve
 		if(!world.isRemote()) {
 			if (this.getBlockState().get(AbstractFermentationBlock.SEALED) && !this.getStackInSlot(4).isEmpty())
 			{
+				tryConvertInventory();
 				int i = ((world.getGameTime() % 20 == 0) ? 1 : 0);
 				if(i>0)
 					this.AGE = AGE + i;
@@ -351,18 +398,20 @@ public abstract class FermentationTileEntity extends TileEntity implements IInve
 		return compound;
 	}
 
-	   @Nullable
-	   public SUpdateTileEntityPacket getUpdatePacket() {
-		      return new SUpdateTileEntityPacket(this.pos, 1, this.getUpdateTag());
-	   }
+	@Nullable
+	public SUpdateTileEntityPacket getUpdatePacket() {
+		return new SUpdateTileEntityPacket(this.pos, 1, this.getUpdateTag());
+	}
 
-	   /**
-	    * Get an NBT compound to sync to the client with SPacketChunkData, used for initial loading of the chunk or when
-	    * many blocks change at once. This compound comes back to you clientside in {@link handleUpdateTag}
-	    */
-	   public CompoundNBT getUpdateTag() {
-	      return write(new CompoundNBT());
-	   }
+	@Override
+	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+		CompoundNBT tag = pkt.getNbtCompound();
+		read(tag);
+	}
+	
+	public CompoundNBT getUpdateTag() {
+		return write(new CompoundNBT());
+	}
 
 	boolean rebuildFerm = false;
 

@@ -15,7 +15,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 
-public class DemijohnLargeBlock extends DemijohnBlock {
+public class DemijohnLargeBlock extends AbstractDemijohnBlock {
 
 	public DemijohnLargeBlock(String id) {
 		super(id);

@@ -56,9 +56,9 @@ public class FermentationIngredient
 		return new FermentationIngredient(fermentation_type, count);
 	}
 	
-	public static void serialize(PacketBuffer buffer, FermentationIngredient ingredient)
+	public void serialize(PacketBuffer buffer)
 	{
-		buffer.writeString(ingredient.fermentation_type.getName());
-		buffer.writeInt(ingredient.count);
+		buffer.writeString(fermentation_type.getName());
+		buffer.writeInt(count);
 	}
 }

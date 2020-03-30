@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:sweet_berries",
+    "minecraft:apple",
+    "meadery:blueberry",
+    "meadery:blackberry",
+    "meadery:raspberry"
+  ]
+}

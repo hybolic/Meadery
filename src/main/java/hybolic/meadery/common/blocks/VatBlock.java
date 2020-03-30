@@ -33,12 +33,12 @@ import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-public class FermentationVatBlock extends AbstractFermentationBlock implements IBlockColor {
+public class VatBlock extends AbstractFermentationBlock implements IBlockColor {
 	
 	public static EnumProperty<DoubleBlockHalf> DoubleBlock_Half = EnumProperty.create("block_part", DoubleBlockHalf.class);
 
 	
-	public FermentationVatBlock(String id) {
+	public VatBlock(String id) {
 		super(Material.IRON, MaterialColor.IRON, id, 3f);
 		this.setDefaultState(this.stateContainer.getBaseState()
 				.with(DECORATIVE, true)

@@ -1,0 +1,16 @@
+{    "multipart": [
+        {   "apply": { "model": "meadery:block/station_table" }},
+        
+        {   "when": { "output": "true" },
+            "apply": { "model": "meadery:block/output_culture"}
+        },
+        
+        {   "when": { "bottle": "true" },
+            "apply": { "model": "meadery:block/bottle"}
+        },
+        
+        {   "when": { "culture": "true" },
+            "apply": { "model": "meadery:block/food"}
+        }
+    ]
+}

@@ -10,9 +10,12 @@ public class ModItems {
 	public static BasicItem HoneyComb;
     @ObjectHolder("meadery:honey")
 	public static HoneyBottleItem Honey;
-    
+
     @ObjectHolder("meadery:yeast_culture")
 	public static BasicItem Yeast_Culture;
+    
+    @ObjectHolder("meadery:dargon_liquor")
+	public static FermentedProduct dragon_liquor;
     
     public static Food food_Mead = (new Food.Builder()).hunger(5).saturation(.3f).build();
     public static Food food_Wine = (new Food.Builder()).hunger(5).saturation(.3f).build();

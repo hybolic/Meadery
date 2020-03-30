@@ -135,7 +135,18 @@ public abstract class AbstractFermentationBlock extends Block implements IWaterL
 				return true;
 			if(player.getHeldItem(hand).isEmpty())
 			{
-				tile.toggleLock();
+				if(state.get(SEALED) == false && tile.getStackInSlot(5).isEmpty() == false)
+				{
+					ItemStack item = tile.decrStackSize(5, 64);
+					if(!player.addItemStackToInventory(item))
+					{
+						spawnAsEntity(world, pos, item);
+					}
+					if(!world.isRemote)
+						world.notifyBlockUpdate(pos, state, state.with(SEALED, true), 2);
+				}
+				else
+					tile.toggleLock();
 				return true;
 			}
 			else {
