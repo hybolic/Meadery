@@ -32,6 +32,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ToolType;
 
 public class VatBlock extends AbstractFermentationBlock implements IBlockColor {
 	
@@ -39,7 +40,7 @@ public class VatBlock extends AbstractFermentationBlock implements IBlockColor {
 
 	
 	public VatBlock(String id) {
-		super(Material.IRON, MaterialColor.IRON, id, 3f);
+		super(Material.IRON, MaterialColor.IRON, id, 3f, ToolType.PICKAXE, 0);
 		this.setDefaultState(this.stateContainer.getBaseState()
 				.with(DECORATIVE, true)
 				.with(SEALED, true)
@@ -58,9 +59,8 @@ public class VatBlock extends AbstractFermentationBlock implements IBlockColor {
 		return this.getDefaultState();
 	}
 
-	public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state,
-			@Nullable TileEntity te, ItemStack stack) {
-		super.harvestBlock(worldIn, player, pos, Blocks.AIR.getDefaultState(), te, stack);
+	public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
+		super.harvestBlock(worldIn, player, pos, state, te, stack);
 	}
 	
 	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {

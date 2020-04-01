@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import hybolic.meadery.MeaderyMod;
 import hybolic.meadery.common.damage.CustomDamage;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,7 +24,6 @@ import net.minecraft.potion.Effects;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
@@ -32,7 +32,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class FermentedProduct extends Item {
+public class FermentedProduct extends Item implements IItemColor {
 
 	private boolean isLiquid = false;
 	private boolean isFood = false;
@@ -114,7 +114,7 @@ public class FermentedProduct extends Item {
 
 			if (!worldIn.isRemote) {
 				// add nausea for that total realism
-				MeaderyMod.LOGGER.info(getEffectLength(stack));
+				//temp
 				if(getABV(stack) >= 20f)
 					entityLiving.addPotionEffect(new EffectInstance(Effects.NAUSEA, getEffectLength(stack)));
 				if(getABV(stack) >= 40f)
@@ -173,8 +173,47 @@ public class FermentedProduct extends Item {
 				itemstack.getTag().putFloat("ABV", 100f);
 				items.add(itemstack);
 			}
-		} else
+		} else if(this.isInGroup(group))
 			items.add(new ItemStack(this));
+	}
 
+	@Override
+	public int getColor(ItemStack stack, int pass) {
+		if(pass == 0)
+		{
+			if(PotionUtils.getEffectsFromStack(stack).size() > 0)
+			{
+				int red 	= 0;
+				int green 	= 0;
+				int blue 	= 0;
+				int colors 	= 0;
+				for(EffectInstance potion : PotionUtils.getEffectsFromStack(stack))
+				{
+					int color = potion.getPotion().getLiquidColor();
+					for(int rep = 0; rep < potion.getAmplifier()+1; rep++)
+					{
+						red 	+= color & 0b110000;
+						green 	+= color & 0b001100;
+						blue 	+= color & 0b000011;
+						colors++;
+					}
+				}
+				red		= red   / colors % 255;
+				green	= green / colors % 255;
+				blue	= blue  / colors % 255;
+				colors = red;
+				colors = (colors << 8) + green;
+				colors = (colors << 8) + blue;
+				return colors;
+			}
+		}
+		return 0xFFFFFFFF;
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public boolean hasEffect(ItemStack stack) {
+		if(isLiquid)
+			return PotionUtils.getEffectsFromStack(stack).size() > 0;
+		return stack.isEnchanted();
 	}
 }

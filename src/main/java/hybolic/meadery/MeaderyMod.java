@@ -6,14 +6,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import hybolic.meadery.client.tesr.WaterRenderer;
+import hybolic.meadery.common.blocks.BarrelBlock;
+import hybolic.meadery.common.blocks.BerryBush;
 import hybolic.meadery.common.blocks.CultureStationBlock;
 import hybolic.meadery.common.blocks.DemijohnLargeBlock;
 import hybolic.meadery.common.blocks.DemijohnSmallBlock;
-import hybolic.meadery.common.blocks.BarrelBlock;
-import hybolic.meadery.common.blocks.VatBlock;
 import hybolic.meadery.common.blocks.HiveBlock;
 import hybolic.meadery.common.blocks.ModBlocks;
+import hybolic.meadery.common.blocks.VatBlock;
 import hybolic.meadery.common.items.BasicItem;
+import hybolic.meadery.common.items.Berry;
 import hybolic.meadery.common.items.FermentedProduct;
 import hybolic.meadery.common.items.Group;
 import hybolic.meadery.common.items.HoneyBottleItem;
@@ -87,8 +89,6 @@ public class MeaderyMod
     	public static class ServerRegistryEvents
     	{
     	}
-//        @ObjectHolder("meadery:bee")
-//    	public static EntityType<BeeEntity> BEE;
         
         @SubscribeEvent
         public static void onBlocksRegistry(final RegistryEvent.Register<Block> event)
@@ -101,6 +101,9 @@ public class MeaderyMod
         	r.register(new DemijohnLargeBlock("demi_large"));
         	r.register(new CultureStationBlock("culture"));
         	r.register(new VatBlock("vat"));
+        	r.register(new BerryBush("blueberry"));
+        	r.register(new BerryBush("blackberry"));
+        	r.register(new BerryBush("raspberry"));
         }
         
         @SubscribeEvent
@@ -115,11 +118,11 @@ public class MeaderyMod
         	r.register(new FermentedProduct("cider",ModItems.food_Cider).setIsLiquid());
         	r.register(new FermentedProduct("beer",ModItems.food_Beer).setIsLiquid());
         	r.register(new FermentedProduct("sake",ModItems.food_Sake).setIsLiquid());
-        	r.register(new FermentedProduct("dargon_liquor",ModItems.food_Dargon_Liquor).setIsLiquid());
-        	r.register(new FermentedProduct("rice",ModItems.food_Rice,        ItemGroup.FOOD));
-        	r.register(new FermentedProduct("blueberry",ModItems.food_Other,  ItemGroup.FOOD));
-        	r.register(new FermentedProduct("blackberry",ModItems.food_Other, ItemGroup.FOOD));
-        	r.register(new FermentedProduct("raspberry",ModItems.food_Other,  ItemGroup.FOOD));
+        	r.register(new FermentedProduct("dragon_liquor",ModItems.food_Dragon_Liquor).setIsLiquid());
+//        	/r.register(new FermentedProduct("rice",ModItems.food_Rice,        ItemGroup.FOOD));
+        	r.register(new Berry(ModBlocks.BLUE_BERRY, "blueberry",ItemGroup.FOOD,  ModItems.food_Other));
+        	r.register(new Berry(ModBlocks.BLACK_BERRY,"blackberry",ItemGroup.FOOD, ModItems.food_Other));
+        	r.register(new Berry(ModBlocks.RASP_BERRY,"raspberry",ItemGroup.FOOD,  ModItems.food_Other));
         	r.register(new BasicItem.ItemBlock("verticle_hive", ModBlocks.hiveBlock, Group.BEES));
         	r.register(new BasicItem.ItemBlock("wild_hive", ModBlocks.wildHiveBlock, Group.BEES));
         	r.register(new BasicItem.TickingItemBlock("barrel", ModBlocks.Barrel, Group.MEADERY));
@@ -138,6 +141,12 @@ public class MeaderyMod
         @SubscribeEvent
         public static void onItemColorRegistry(final ColorHandlerEvent.Item event)
         {
+        	event.getItemColors().register(ModItems.mead, ModItems.mead);
+        	event.getItemColors().register(ModItems.wine, ModItems.wine);
+        	event.getItemColors().register(ModItems.cider, ModItems.cider);
+        	event.getItemColors().register(ModItems.beer, ModItems.beer);
+        	event.getItemColors().register(ModItems.sake, ModItems.sake);
+        	event.getItemColors().register(ModItems.dragon_liquor, ModItems.dragon_liquor);
         }
         
         @SubscribeEvent
@@ -179,6 +188,7 @@ public class MeaderyMod
             
             return type;
         }
+        
 		@Mod.EventBusSubscriber(modid = MeaderyMod.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 		public static class ItemToolTipHandler{
 	    	@OnlyIn(Dist.CLIENT)

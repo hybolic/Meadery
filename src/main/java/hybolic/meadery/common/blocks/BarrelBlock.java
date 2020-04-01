@@ -17,6 +17,7 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ToolType;
 
 public class BarrelBlock extends AbstractFermentationBlock {
 
@@ -24,7 +25,7 @@ public class BarrelBlock extends AbstractFermentationBlock {
 	public static BooleanProperty DECORATIVE = BooleanProperty.create("decorative");
 	
 	public BarrelBlock(String id) {
-		super(Material.WOOD, MaterialColor.WOOD, id, 0.5f);
+		super(Material.WOOD, MaterialColor.WOOD, id, 0.5f, ToolType.AXE, 0);
 		this.setDefaultState(this.stateContainer.getBaseState().with(SEALED, true).with(DECORATIVE, true).with(WATER_LOGGED, false));
 	}
 

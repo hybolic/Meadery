@@ -27,11 +27,12 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ToolType;
 
 public class CultureStationBlock extends Block {
 
 	public CultureStationBlock(String id) {
-		super(Block.Properties.create(Material.WOOD, MaterialColor.GOLD).tickRandomly().hardnessAndResistance(0.3f));
+		super(Block.Properties.create(Material.WOOD, MaterialColor.GOLD).tickRandomly().hardnessAndResistance(0.3f).harvestTool(ToolType.AXE).harvestLevel(0));
 		this.setRegistryName(MeaderyMod.MODID, id);
 		this.setDefaultState(this.stateContainer.getBaseState().with(CULTURE, false).with(BOTTLE, false).with(OUT, false));
 	}

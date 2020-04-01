@@ -94,7 +94,11 @@ public class WaterRenderer extends TileEntityRenderer<FermentationTileEntity> {
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			GlStateManager.disableAlphaTest();
 			GlStateManager.enableCull();
-			GlStateManager.color3f(0.3f, 0.3f, 1f);
+			int color = te.getWorld().getBiome(te.getPos()).getWaterColor();
+			int red = color >> 16 & 0xff;
+			int gre = color >> 8 & 0xff;
+			int blu = color & 0xff;
+			GlStateManager.color3f(red / 255f, gre / 255f, blu / 255f);
 			Minecraft.getInstance().textureManager.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 			GlStateManager.disableCull();
 			GlStateManager.disableLighting();

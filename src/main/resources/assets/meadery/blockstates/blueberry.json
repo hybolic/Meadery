@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "age=0": { "model": "meadery:block/berry/berry_seedling" },
+        "age=1": { "model": "meadery:block/berry/berry" },
+        "age=2": { "model": "meadery:block/berry/berry" },
+        "age=3": { "model": "meadery:block/berry/blueberry_fruiting" }
+    }
+}

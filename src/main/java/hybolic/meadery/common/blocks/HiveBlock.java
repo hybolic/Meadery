@@ -37,6 +37,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.ToolType;
 
 public class HiveBlock extends Block {
 
@@ -47,10 +48,9 @@ public class HiveBlock extends Block {
 	
 	public HiveBlock(String id)
 	{
-		super(Block.Properties.create(Material.WOOD, MaterialColor.GOLD).tickRandomly().hardnessAndResistance(0.4F));
+		super(Block.Properties.create(Material.WOOD, MaterialColor.GOLD).tickRandomly().hardnessAndResistance(0.4F).harvestTool(ToolType.AXE));
 		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(HIBERNATING, false));
 		this.setRegistryName(MeaderyMod.MODID, id);
-		
 	}
 
 	public void tick(BlockState state, World worldIn, BlockPos pos, Random random) {
@@ -130,6 +130,7 @@ public class HiveBlock extends Block {
 		items.add(hive);
 		return items;
 	}
+	
     public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
     {
     	if(player.isSneaking())

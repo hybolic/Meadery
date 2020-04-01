@@ -1,0 +1,7 @@
+{
+    "parent": "minecraft:item/generated",
+    "textures": {
+        "layer0": "meadery:item/berries_overlay",
+        "layer1": "meadery:item/berries"
+    }
+}

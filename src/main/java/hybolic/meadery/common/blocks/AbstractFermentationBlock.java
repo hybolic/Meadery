@@ -34,6 +34,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
@@ -48,6 +49,11 @@ public abstract class AbstractFermentationBlock extends Block implements IWaterL
 	
 	public AbstractFermentationBlock(Material mat, MaterialColor color, String id, float hr) {
 		super(Block.Properties.create(mat, color).tickRandomly().hardnessAndResistance(hr));
+		this.setRegistryName(MeaderyMod.MODID, id);
+	}
+	
+	public AbstractFermentationBlock(Material mat, MaterialColor color, String id, float hr, ToolType tool, int level) {
+		super(Block.Properties.create(mat, color).tickRandomly().hardnessAndResistance(hr).harvestTool(tool).harvestLevel(level));
 		this.setRegistryName(MeaderyMod.MODID, id);
 	}
 	

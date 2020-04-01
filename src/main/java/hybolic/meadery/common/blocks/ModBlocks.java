@@ -17,6 +17,13 @@ public class ModBlocks {
 	
 	@ObjectHolder("meadery:culture")
 	public static final Block CultureStation = null;
+
+	@ObjectHolder("meadery:blueberry")
+	public static final BerryBush BLUE_BERRY = null;
+	@ObjectHolder("meadery:blackberry")
+	public static final BerryBush BLACK_BERRY = null;
+	@ObjectHolder("meadery:raspberry")
+	public static final BerryBush RASP_BERRY = null;
 	
 	@ObjectHolder("meadery:verticle_hive")
 	public static HiveBlock hiveBlock;
