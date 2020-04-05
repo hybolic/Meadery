@@ -10,6 +10,13 @@ public class ModItems {
 	public static BasicItem HoneyComb;
     @ObjectHolder("meadery:honey")
 	public static HoneyBottleItem Honey;
+    
+    @ObjectHolder("meadery:blueberry")
+	public static Berry blueberry;
+    @ObjectHolder("meadery:blackberry")
+	public static Berry blackberry;
+    @ObjectHolder("meadery:raspberry")
+	public static Berry raspberry;
 
     @ObjectHolder("meadery:yeast_culture")
 	public static BasicItem Yeast_Culture;

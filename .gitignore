@@ -11,7 +11,7 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
+#*.jar
 *.war
 *.nar
 *.ear
@@ -42,3 +42,4 @@ gradlew*
 .vs/meadery/v15/.suo
 .vs/slnx.sqlite
 .vs/VSWorkspaceState.json
+build/*

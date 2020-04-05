@@ -7,27 +7,31 @@ public class ModBlocks {
 
 
 	@ObjectHolder("meadery:demi_small")
-	public static final DemijohnSmallBlock Demi_Small = null;
+	public static DemijohnSmallBlock Demi_Small;
 	@ObjectHolder("meadery:demi_large")
-	public static final DemijohnLargeBlock Demi_Large = null;
+	public static DemijohnLargeBlock Demi_Large;
 	@ObjectHolder("meadery:barrel")
-	public static final BarrelBlock Barrel = null;
+	public static BarrelBlock Barrel;
 	@ObjectHolder("meadery:vat")
-	public static final VatBlock VAT = null;
-	
+	public static VatBlock VAT;
+
 	@ObjectHolder("meadery:culture")
-	public static final Block CultureStation = null;
+	public static Block CultureStation;
+	@ObjectHolder("meadery:honeycomb_block")
+	public static Block honeycomb_block;
+	@ObjectHolder("meadery:honey_block")
+	public static Block honey_block;
 
 	@ObjectHolder("meadery:blueberry")
-	public static final BerryBush BLUE_BERRY = null;
+	public static BerryBush BLUE_BERRY;
 	@ObjectHolder("meadery:blackberry")
-	public static final BerryBush BLACK_BERRY = null;
+	public static BerryBush BLACK_BERRY;
 	@ObjectHolder("meadery:raspberry")
-	public static final BerryBush RASP_BERRY = null;
+	public static BerryBush RASP_BERRY;
 	
 	@ObjectHolder("meadery:verticle_hive")
-	public static HiveBlock hiveBlock;
+	public static HiveBlock VERTICLE_HIVE;
 	
 	@ObjectHolder("meadery:wild_hive")
-	public static Block wildHiveBlock;
+	public static Block WILD_HIVE;
 }

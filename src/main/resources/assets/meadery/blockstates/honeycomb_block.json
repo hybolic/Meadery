@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "meadery:block/honeycomb_block" }
+    }
+}

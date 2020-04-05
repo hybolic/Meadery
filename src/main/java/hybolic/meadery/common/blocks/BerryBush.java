@@ -27,7 +27,7 @@ public class BerryBush extends SweetBerryBushBlock {
 	public Item item;
 	
 	public BerryBush(String id) {
-		super(Block.Properties.create(Material.WOOD, MaterialColor.GOLD).hardnessAndResistance(0.4F).harvestTool(ToolType.get("hoe")));
+		super(Block.Properties.create(Material.WOOD, MaterialColor.GOLD).hardnessAndResistance(0.4F).tickRandomly().harvestTool(ToolType.get("hoe")));
 		this.setRegistryName(MeaderyMod.MODID, id);
 	}
 

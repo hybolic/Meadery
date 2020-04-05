@@ -4,7 +4,7 @@ loaderVersion="[28,)"
 issueTrackerURL="https://github.com/hybolic/Meadery/issues"
 [[mods]]
 modId="meadery"
-version="${file.jarVersion}"
+version="0.2.1"
 displayName="Meadery Mod"
 updateJSONURL="https://raw.githubusercontent.com/hybolic/Meadery/master/BUILDS/versions.json"
 displayURL="https://github.com/hybolic/Meadery/"

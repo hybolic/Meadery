@@ -1,0 +1,32 @@
+{   "parent": "block/block",
+    "textures": {
+        "particle": "meadery:block/honey_block_inside",
+        "inside": "meadery:block/honey_block_inside",
+        "outside": "meadery:block/honey_block_side"
+    },
+    "elements": [
+        {   "from": [ 0, 0, 0 ],
+            "to": [ 16, 16, 16 ],
+            "faces": {
+                "down":  { "texture": "#outside", "cullface": "down" },
+                "up":    { "texture": "#outside", "cullface": "up" },
+                "north": { "texture": "#outside", "cullface": "north" },
+                "south": { "texture": "#outside", "cullface": "south" },
+                "west":  { "texture": "#outside", "cullface": "west" },
+                "east":  { "texture": "#outside", "cullface": "east" }
+            }
+        },
+        {   "from": [ 1, 1, 1 ],
+            "to": [ 15, 15, 15 ],
+            "faces": {
+                "down":  { "uv": [ 1, 1, 15, 15 ], "texture": "#inside"},
+                "up":    { "uv": [ 1, 1, 15, 15 ], "texture": "#inside"},
+                "north": { "uv": [ 1, 1, 15, 15 ], "texture": "#inside"},
+                "south": { "uv": [ 1, 1, 15, 15 ], "texture": "#inside"},
+                "west":  { "uv": [ 1, 1, 15, 15 ], "texture": "#inside"},
+                "east":  { "uv": [ 1, 1, 15, 15 ], "texture": "#inside"}
+            }
+        }
+    ]
+}
+

@@ -13,6 +13,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.block.HorizontalBlock;
+import net.minecraft.block.LeavesBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,6 +21,7 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.IntegerProperty;
@@ -33,6 +35,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -49,7 +52,7 @@ public class HiveBlock extends Block {
 	public HiveBlock(String id)
 	{
 		super(Block.Properties.create(Material.WOOD, MaterialColor.GOLD).tickRandomly().hardnessAndResistance(0.4F).harvestTool(ToolType.AXE));
-		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(HIBERNATING, false));
+		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(HIBERNATING, false).with(HONEY_AMOUNT, 0));
 		this.setRegistryName(MeaderyMod.MODID, id);
 	}
 
@@ -66,14 +69,77 @@ public class HiveBlock extends Block {
 				state = state.with(HONEY_AMOUNT, state.get(HONEY_AMOUNT) + 1);
 			else {
 				state = state.with(HONEY_AMOUNT, 12).with(HIBERNATING, true);
-				//spawn queen
+				if(random.nextInt(99) != 0)
+				{
+					BlockPos leafpos = getRandomBlock(worldIn,pos);
+					if(leafpos != pos)
+					{
+						if(nearbyHives(worldIn,pos) < 3)
+						{
+							worldIn.setBlockState(leafpos, ModBlocks.WILD_HIVE.getDefaultState().with(HONEY_AMOUNT, 15 - state.get(HONEY_AMOUNT)).with(HIBERNATING, true).rotate(Rotation.values()[random.nextInt(3)]));
+	
+							for (int j = 0; j < (int)leafpos.distanceSq(pos); ++j) {
+								double d0 = random.nextDouble();
+								float f = (random.nextFloat() - 0.5F) * 0.2F;
+								float f1 = (random.nextFloat() - 0.5F) * 0.2F;
+								float f2 = (random.nextFloat() - 0.5F) * 0.2F;
+								double d1 = MathHelper.lerp(d0, (double)pos.getX(), (double)leafpos.getX()) + (random.nextDouble() - 0.5D) + 0.5D;
+								double d2 = MathHelper.lerp(d0, (double)pos.getY(), (double)leafpos.getY()) + random.nextDouble() - 0.5D;
+								double d3 = MathHelper.lerp(d0, (double)pos.getZ(), (double)leafpos.getZ()) + (random.nextDouble() - 0.5D) + 0.5D;
+								((ServerWorld) worldIn).spawnParticle(ParticleTypes.HEART, d1, d2, d3, 0, (double)f, (double)f1, (double)f2, 0);
+							}
+						}
+					}
+				}
 			}
 		}
 		worldIn.setBlockState(pos, state);
 	}
 
-	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
-			BlockRayTraceResult hit) {
+	private int nearbyHives(World worldIn, BlockPos pos)
+	{
+		int count = 0;
+		for(int x = -7; x < 8; x++)
+		{
+			for(int z = -7; z < 8; z++)
+			{
+				for(int y = -7; y < 8; y++)
+				{
+					BlockPos newpos = pos.add(x, y, z);
+					if(x == 0 && y == 0 && z == 0)
+						continue;
+					else if(worldIn.getBlockState(newpos).getBlock() instanceof HiveBlock)
+						count++;
+				}
+			}
+		}
+		return count;
+	}
+
+	private BlockPos getRandomBlock(World world, BlockPos pos)
+	{
+		for(int i = 16; i > 0; i--)
+		{
+			int x = -7 + world.getRandom().nextInt(15);
+			int y = -7 + world.getRandom().nextInt(15);
+			int z = -7 + world.getRandom().nextInt(15);
+			BlockPos new_pos = pos.add(x,y,z);
+			while(world.getBlockState(new_pos).getBlock() instanceof LeavesBlock)
+			{
+				if(world.getBlockState(new_pos.down()).isAir(world, new_pos.down()))
+					return new_pos.down();
+				else if(world.getBlockState(new_pos.down()).getBlock() instanceof LeavesBlock)
+				{
+					new_pos = new_pos.down();
+				}
+				else
+					break;
+			}
+		}
+		return pos;
+	}
+
+	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if (player.getHeldItem(hand).getItem() == Items.SHEARS && state.get(HONEY_AMOUNT) > 0) {
 			if (player.getHeldItem(hand).getDamage() < player.getHeldItem(hand).getMaxDamage()) {
 				checkIfSmoked(state, world, pos);
@@ -104,7 +170,7 @@ public class HiveBlock extends Block {
 	}
 
 	public boolean hasComparatorInputOverride(BlockState state) {
-		return state.getBlock() == ModBlocks.hiveBlock;
+		return state.getBlock() == ModBlocks.VERTICLE_HIVE;
 	}
 	
 	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {

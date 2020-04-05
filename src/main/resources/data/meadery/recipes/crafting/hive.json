@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#-#",
+        "#M#",
+        "O-O"
+    ],
+    "key": {
+        "#": {
+            "tag": "minecraft:planks"
+        },
+        "M": {
+            "item": "meadery:wild_hive"
+        },
+        "O": {
+            "tag": "minecraft:wooden_fences"
+        },
+        "-": {
+            "tag": "minecraft:wooden_slabs"
+        }
+    },
+    "result": {
+        "item": "meadery:verticle_hive",
+        "count": 1
+    }
+}

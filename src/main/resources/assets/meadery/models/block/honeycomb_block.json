@@ -1,0 +1,6 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+        "all": "meadery:block/honeycomb_block"
+    }
+}

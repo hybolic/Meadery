@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#BG",
+        "B#B",
+        "GB#"
+    ],
+    "key": {
+        "#": {
+            "tag": "forge:dyes/yellow"
+        },
+        "B": {
+            "tag": "forge:dyes/black"
+        },
+        "G": {
+            "tag": "forge:nuggets/gold"
+        }
+    },
+    "result": {
+        "item": "meadery:wild_hive",
+        "count": 1
+    }
+}
