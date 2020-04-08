@@ -40,6 +40,7 @@ import net.minecraft.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.dispenser.IDispenseItemBehavior;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -50,7 +51,6 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.tileentity.DispenserTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
@@ -107,19 +107,20 @@ public class MeaderyMod
 					public ItemStack dispense(IBlockSource source, ItemStack stack)
 					{
 						World world = source.getWorld();
-						BlockPos pos = source.getBlockPos();
-						BlockState state = world.getBlockState(pos.offset(source.getBlockState().get(DispenserBlock.FACING)));
+						BlockPos pos_offset = source.getBlockPos().offset(source.getBlockState().get(DispenserBlock.FACING));
+						BlockState state = world.getBlockState(pos_offset);
 						DispenserTileEntity tile = source.<DispenserTileEntity>getBlockTileEntity();
 						if(state.getBlock() instanceof HiveBlock)
 							if(state.get(HiveBlock.HONEY_AMOUNT) > 0)
 							{
 								state = state.with(HiveBlock.HONEY_AMOUNT, state.get(HiveBlock.HONEY_AMOUNT) - 1);
-								world.setBlockState(pos, state);
+								world.setBlockState(pos_offset, state);
 								ItemStack honey_stack = new ItemStack(ModItems.Honey);
 								if(addItemStack(tile, honey_stack) == -1)
 								{
 									def.dispense(source, honey_stack);
 								}
+								stack.shrink(1);
 							}
 						if(stack.getCount() > 0)
 							return stack;
@@ -129,6 +130,7 @@ public class MeaderyMod
 					public int addItemStack(DispenserTileEntity tile, ItemStack stack) {
 						for (int i = 0; i < tile.getSizeInventory(); ++i) {
 							if (tile.getStackInSlot(i).isEmpty()) {
+								tile.setInventorySlotContents(i, stack);
 								return i;
 							} else if (ItemStack.areItemStacksEqual(tile.getStackInSlot(i), stack)) {
 								if (tile.getStackInSlot(i).getCount() + stack.getCount() > tile.getStackInSlot(i)
@@ -147,6 +149,60 @@ public class MeaderyMod
 						return -1;
 					}
         		});
+        DispenserBlock.registerDispenseBehavior(Items.SHEARS, new IDispenseItemBehavior()
+		{
+			private final DefaultDispenseItemBehavior def = new DefaultDispenseItemBehavior();
+
+			@Override
+			public ItemStack dispense(IBlockSource source, ItemStack stack)
+			{
+				World world = source.getWorld();
+				BlockPos pos_offset = source.getBlockPos().offset(source.getBlockState().get(DispenserBlock.FACING));
+				BlockState state = world.getBlockState(pos_offset);
+				DispenserTileEntity tile = source.<DispenserTileEntity>getBlockTileEntity();
+				if(state.getBlock() instanceof HiveBlock)
+					if(state.get(HiveBlock.HONEY_AMOUNT) > 0)
+					{
+						state = state.with(HiveBlock.HONEY_AMOUNT, state.get(HiveBlock.HONEY_AMOUNT) - 1);
+						world.setBlockState(pos_offset, state);
+						ItemStack honey_comb_stack = new ItemStack(ModItems.HoneyComb, 3);
+						if(addItemStack(tile, honey_comb_stack) == -1)
+						{
+							for(int i = 0; i < honey_comb_stack.getCount(); i++)
+								def.dispense(source, honey_comb_stack);	
+						}
+						if(stack.attemptDamageItem(1, world.rand, (ServerPlayerEntity)null))
+						{
+							stack.setCount(0);
+						}
+					}
+				if(stack.getCount() > 0)
+					return stack;
+				return ItemStack.EMPTY;
+			}
+
+			public int addItemStack(DispenserTileEntity tile, ItemStack stack) {
+				for (int i = 0; i < tile.getSizeInventory(); ++i) {
+					if (tile.getStackInSlot(i).isEmpty()) {
+						tile.setInventorySlotContents(i, stack);
+						return i;
+					} else if (ItemStack.areItemStacksEqual(tile.getStackInSlot(i), stack)) {
+						if (tile.getStackInSlot(i).getCount() + stack.getCount() > tile.getStackInSlot(i)
+								.getMaxStackSize()) {
+							int temp = tile.getStackInSlot(i).getMaxStackSize() - tile.getStackInSlot(i).getCount();
+							tile.getStackInSlot(i).setCount(tile.getStackInSlot(i).getMaxStackSize());
+							stack.shrink(temp);
+							continue;
+						} else {
+							tile.getStackInSlot(i).grow(stack.getCount());
+							return i;
+						}
+					}
+				}
+
+				return -1;
+			}
+		});
     }
 
     @SubscribeEvent

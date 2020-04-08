@@ -13,11 +13,22 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '0.1.0'
+version='0.2.2'
 group = 'nadir.meadery' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'meadery'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' 
+
+tasks.register("increment_version") {
+	doLast {
+		def v = buildFile.getText().find(version)
+	    def (major, minor, patch) = v.tokenize('.')
+	    int newPatch = patch.toInteger() + 1
+	    String newVersion = major + "." + minor + "." + newPatch
+	    String updatedVersion = buildFile.getText().replaceFirst("version='"+v+"'","version='"+newVersion+"'")
+	    buildFile.setText(updatedVersion)
+	}
+}
 
 minecraft {
     mappings channel: 'snapshot', version: '20190719-1.14.3'

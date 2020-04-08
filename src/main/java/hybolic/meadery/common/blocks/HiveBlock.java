@@ -170,10 +170,11 @@ public class HiveBlock extends Block {
 	}
 
 	public boolean hasComparatorInputOverride(BlockState state) {
-		return state.getBlock() == ModBlocks.VERTICLE_HIVE;
+		return state.getBlock().getRegistryName().getNamespace().equalsIgnoreCase("verticle_hive");
 	}
 	
 	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
+		MeaderyMod.LOGGER.info("COMP");
 		return blockState.get(HONEY_AMOUNT);
 	}
 

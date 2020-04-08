@@ -1,10 +1,11 @@
 {
-  "homepage": "https://github.com/hybolic/Meadery/",
-  "1.14.4": {
-    "0.2.1":"Alpha"
-  },
-  "promos": {
-    "1.14.4-latest": "0.2.1",
-    "1.14.4-recommended": "0.2.1"
-  }
+"homepage": "https://github.com/hybolic/Meadery/",
+"1.14.4": {
+"0.2.1":"Alpha",
+"0.2.2":"Alpha"
+},
+"promos": {
+"1.14.4-latest": "0.2.2",
+"1.14.4-recommended": "0.2.2"
+}
 }
