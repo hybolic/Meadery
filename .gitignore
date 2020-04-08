@@ -43,3 +43,4 @@ gradlew*
 .vs/slnx.sqlite
 .vs/VSWorkspaceState.json
 build/*
+src/main/resources/assets/meadery/models/block/desktop.ini

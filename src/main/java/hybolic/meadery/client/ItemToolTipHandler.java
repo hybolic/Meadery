@@ -16,7 +16,6 @@ public class ItemToolTipHandler {
 			for (ResourceLocation tag : event.getItemStack().getItem().getTags()) {
 				event.getToolTip().add(new TranslationTextComponent(tag.toString()));
 			}
-
 			if (event.getItemStack().hasTag()) {
 				event.getToolTip().add(new TranslationTextComponent(event.getItemStack().getTag().toString()));
 			}
